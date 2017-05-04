@@ -28,6 +28,32 @@ public class ImageBarnnerViewGroup extends ViewGroup {
 
     private Scroller scroller;
 
+    private boolean isClick;
+
+    private ImageBarnnerLister lister;
+
+    public ImageBarnnerLister getLister() {
+        return lister;
+    }
+
+    public void setLister(ImageBarnnerLister lister) {
+        this.lister = lister;
+    }
+
+    public interface ImageBarnnerLister {
+        void clickImageIndex(int pos);
+    }
+
+    private ImageBarnnerViewGroupLisnner barnnerViewGroupLisnner;
+
+    public ImageBarnnerViewGroupLisnner getBarnnerViewGroupLisnner() {
+        return barnnerViewGroupLisnner;
+    }
+
+    public void setBarnnerViewGroupLisnner(ImageBarnnerViewGroupLisnner barnnerViewGroupLisnner) {
+        this.barnnerViewGroupLisnner = barnnerViewGroupLisnner;
+    }
+
     private boolean isAuto = true;
     private Timer timer = new Timer();
     private TimerTask task;
@@ -42,7 +68,7 @@ public class ImageBarnnerViewGroup extends ViewGroup {
                     }
 
                     scrollTo(childwidth * index, 0);
-
+                    barnnerViewGroupLisnner.selectImage(index);
                     break;
             }
         }
@@ -83,7 +109,7 @@ public class ImageBarnnerViewGroup extends ViewGroup {
             }
         };
 
-        timer.schedule(task, 100, 1000);
+        timer.schedule(task, 100, 3000);
     }
 
     @Override
@@ -126,10 +152,11 @@ public class ImageBarnnerViewGroup extends ViewGroup {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
+                stopAuto();
                 if (!scroller.isFinished()) {
                     scroller.abortAnimation();
                 }
-
+                isClick = true;
                 x = (int) event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -137,21 +164,29 @@ public class ImageBarnnerViewGroup extends ViewGroup {
                 int distance = moveX - x;
                 scrollBy(-distance, 0);
                 x = moveX;
+                isClick = false;
                 break;
             case MotionEvent.ACTION_UP:
+
                 int scrollx = getScrollX();
                 index = (scrollx + childwidth / 2) / childwidth;
+
                 if (index < 0) {
                     index = 0;
                 } else if (index > children - 1) {
                     index = children - 1;
                 }
 
-                int dx = index * childwidth - scrollx;
-                scroller.startScroll(scrollx, 0, dx, 0);
-                postInvalidate();
+                if (isClick) {
+                    lister.clickImageIndex(index);
+                } else {
+                    int dx = index * childwidth - scrollx;
+                    scroller.startScroll(scrollx, 0, dx, 0);
+                    postInvalidate();
+                    barnnerViewGroupLisnner.selectImage(index);
+                }
 
-//                scrollTo(index * childwidth, 0);
+                startAuto();
 
                 break;
             default:
@@ -171,5 +206,9 @@ public class ImageBarnnerViewGroup extends ViewGroup {
                 leftMargin += childwidth;
             }
         }
+    }
+
+    public interface ImageBarnnerViewGroupLisnner {
+        void selectImage(int index);
     }
 }

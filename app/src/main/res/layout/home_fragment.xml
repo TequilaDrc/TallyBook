@@ -22,11 +22,11 @@
             android:textSize="22sp" />
     </RelativeLayout>
 
-    <com.tequila.tallybook.view.ImageBarnnerViewGroup
+    <com.tequila.tallybook.view.ImageBarnnerFramLayout
         android:id="@+id/image_group"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="180dp">
 
-    </com.tequila.tallybook.view.ImageBarnnerViewGroup>
+    </com.tequila.tallybook.view.ImageBarnnerFramLayout>
 
 </LinearLayout>
