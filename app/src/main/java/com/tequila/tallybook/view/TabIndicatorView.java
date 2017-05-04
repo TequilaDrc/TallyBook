@@ -1,4 +1,4 @@
-package com.tequila.tallybook.utils;
+package com.tequila.tallybook.view;
 
 import android.content.Context;
 import android.graphics.Color;

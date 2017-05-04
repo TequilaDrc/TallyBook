@@ -15,7 +15,7 @@ import com.tequila.tallybook.fragment.HomeFragment;
 import com.tequila.tallybook.fragment.LifeFragment;
 import com.tequila.tallybook.fragment.MoreFragment;
 import com.tequila.tallybook.utils.SysApplication;
-import com.tequila.tallybook.utils.TabIndicatorView;
+import com.tequila.tallybook.view.TabIndicatorView;
 
 public class MainActivity extends FragmentActivity
         implements TabHost.OnTabChangeListener{
