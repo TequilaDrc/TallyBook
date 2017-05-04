@@ -84,6 +84,7 @@ public class MainActivity extends FragmentActivity
         tabHost.getTabWidget().setDividerDrawable(android.R.color.white);
         tabHost.setCurrentTabByTag(TAB_HOME);
         homeIndicator.setSelect(true);
+
         // 点击tab事件
         tabHost.setOnTabChangedListener(this);
     }
