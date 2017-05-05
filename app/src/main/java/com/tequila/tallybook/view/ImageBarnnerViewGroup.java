@@ -6,11 +6,14 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.tequila.tallybook.SharedApplication.context;
 
 
 /**
@@ -27,6 +30,8 @@ public class ImageBarnnerViewGroup extends ViewGroup {
     private int index = 0;
 
     private Scroller scroller;
+    private int mTouchSlop;
+    private int mStartX;
 
     private boolean isClick;
 
@@ -91,6 +96,7 @@ public class ImageBarnnerViewGroup extends ViewGroup {
 
     private void initObj() {
         scroller = new Scroller(getContext());
+        mTouchSlop = ViewConfiguration.get(context).getScaledPagingTouchSlop();
 
         task = new TimerTask() {
             @Override
@@ -101,7 +107,7 @@ public class ImageBarnnerViewGroup extends ViewGroup {
             }
         };
 
-        timer.schedule(task, 100, 3000);
+        timer.schedule(task, 100, 4000);
     }
 
     @Override
@@ -135,28 +141,46 @@ public class ImageBarnnerViewGroup extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                stopAuto();
+                if (!scroller.isFinished()) {
+                    scroller.abortAnimation();
+                }
+                isClick = true;
+                mStartX = (int) ev.getX();
+                x = mStartX;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int diff = (int) Math.abs(ev.getX() - mStartX);
+                x = (int) ev.getX();
+
+                //横向滑动距离超过slop值才拦截；
+                if (diff > mTouchSlop) {
+                    isClick = false;
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (isClick) {
+                    lister.clickImageIndex(index);
+                }
+                startAuto();
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
 
-                stopAuto();
-                if (!scroller.isFinished()) {
-                    scroller.abortAnimation();
-                }
-                isClick = true;
-                x = (int) event.getX();
-                break;
             case MotionEvent.ACTION_MOVE:
                 int moveX = (int) event.getX();
                 int distance = moveX - x;
                 scrollBy(-distance, 0);
                 x = moveX;
-                isClick = false;
                 break;
             case MotionEvent.ACTION_UP:
 
@@ -164,28 +188,22 @@ public class ImageBarnnerViewGroup extends ViewGroup {
                 index = (scrollx + childwidth / 2) / childwidth;
 
                 if (index < 0) {
-                    index = 0;
-                } else if (index > children - 1) {
                     index = children - 1;
+                } else if (index > children - 1) {
+                    index = 0;
                 }
 
-                if (isClick) {
-                    lister.clickImageIndex(index);
-                } else {
-                    int dx = index * childwidth - scrollx;
-                    scroller.startScroll(scrollx, 0, dx, 0);
-                    postInvalidate();
-                    barnnerViewGroupLisnner.selectImage(index);
-                }
+                int dx = index * childwidth - scrollx;
+                scroller.startScroll(scrollx, 0, dx, 0);
+                postInvalidate();
 
                 startAuto();
-
+                barnnerViewGroupLisnner.selectImage(index);
                 break;
             default:
-
                 break;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -196,6 +214,7 @@ public class ImageBarnnerViewGroup extends ViewGroup {
                 View view = getChildAt(i);
                 view.layout(leftMargin, 0, leftMargin + childwidth, childheight);
                 leftMargin += childwidth;
+                view.setClickable(true);
             }
         }
     }
