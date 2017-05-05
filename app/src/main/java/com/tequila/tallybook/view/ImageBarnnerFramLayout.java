@@ -1,7 +1,6 @@
 package com.tequila.tallybook.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -15,8 +14,6 @@ import android.widget.LinearLayout;
 
 import com.tequila.tallybook.R;
 
-import java.util.List;
-
 /**
  * Created by tequila on 2017/5/5.
  */
@@ -28,10 +25,6 @@ public class ImageBarnnerFramLayout extends FrameLayout
     private LinearLayout linearLayout;
 
     private FramLayoutLisenner lisenner;
-
-    public FramLayoutLisenner getLisenner() {
-        return lisenner;
-    }
 
     public void setLisenner(FramLayoutLisenner lisenner) {
         this.lisenner = lisenner;
@@ -56,19 +49,18 @@ public class ImageBarnnerFramLayout extends FrameLayout
         initDotLinearlayout();
     }
 
-    public void addBitmaps(List<Bitmap> list) {
-        for (int i = 0; i < list.size(); i++) {
-            Bitmap bitmap = list.get(i);
-            addBitmapToImageBarnnerViewGroup(bitmap);
+    public void addResource(int[] images) {
+        for (int i = 0; i < images.length; i++) {
+            addResourceToImageBarnnerViewGroup(images[i]);
             addDotToLinearlayout();
         }
     }
 
-    private void addBitmapToImageBarnnerViewGroup(Bitmap bitmap) {
+    private void addResourceToImageBarnnerViewGroup(int resId) {
         ImageView imageView = new ImageView(getContext());
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewBean.WIDTH, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageResource(resId);
         imageBarnnerViewGroup.addView(imageView);
     }
 

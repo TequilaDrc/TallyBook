@@ -1,7 +1,5 @@
 package com.tequila.tallybook.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,11 +13,10 @@ import com.tequila.tallybook.R;
 import com.tequila.tallybook.view.ImageBarnnerFramLayout;
 import com.tequila.tallybook.view.ViewBean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.tequila.tallybook.R.drawable.f;
 
 /**
  * Created by Tequila on 2017/5/4.
@@ -29,7 +26,7 @@ public class HomeFragment extends Fragment
         implements ImageBarnnerFramLayout.FramLayoutLisenner {
 
     private int[] images = new int[] {
-            R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f
+            R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, f
     };
 
     @Bind(R.id.image_group)
@@ -53,13 +50,7 @@ public class HomeFragment extends Fragment
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         ViewBean.WIDTH = dm.widthPixels;
 
-        List<Bitmap> list = new ArrayList<Bitmap>();
-        for (int i = 0; i < images.length; i++) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), images[i]);
-            list.add(bitmap);
-        }
-
-        mGroup.addBitmaps(list);
+        mGroup.addResource(images);
         mGroup.setLisenner(this);
     }
 

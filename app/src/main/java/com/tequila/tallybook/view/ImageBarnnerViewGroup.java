@@ -32,10 +32,6 @@ public class ImageBarnnerViewGroup extends ViewGroup {
 
     private ImageBarnnerLister lister;
 
-    public ImageBarnnerLister getLister() {
-        return lister;
-    }
-
     public void setLister(ImageBarnnerLister lister) {
         this.lister = lister;
     }
@@ -45,10 +41,6 @@ public class ImageBarnnerViewGroup extends ViewGroup {
     }
 
     private ImageBarnnerViewGroupLisnner barnnerViewGroupLisnner;
-
-    public ImageBarnnerViewGroupLisnner getBarnnerViewGroupLisnner() {
-        return barnnerViewGroupLisnner;
-    }
 
     public void setBarnnerViewGroupLisnner(ImageBarnnerViewGroupLisnner barnnerViewGroupLisnner) {
         this.barnnerViewGroupLisnner = barnnerViewGroupLisnner;
