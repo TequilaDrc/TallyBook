@@ -53,7 +53,8 @@ public class MainActivity extends FragmentActivity
         spec = tabHost.newTabSpec(TAB_HOME);
         homeIndicator = new TabIndicatorView(this);
         homeIndicator.setTitle("首页");
-        homeIndicator.setTabIcon(R.drawable.home_normal, R.drawable.home_press);
+        homeIndicator.setTabIcon(R.drawable.home_normal,
+                R.drawable.home_press);
         spec.setIndicator(homeIndicator);
         tabHost.addTab(spec, HomeFragment.class, null);
 

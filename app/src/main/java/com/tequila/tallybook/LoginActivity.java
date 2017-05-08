@@ -3,13 +3,13 @@ package com.tequila.tallybook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.view.TextURLView;
 
 import butterknife.Bind;
@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * Created by Tequila on 2017/5/8.
  */
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends BaseActivity{
 
     @Bind(R.id.rl_user)
     RelativeLayout rl_user;
@@ -56,10 +56,12 @@ public class LoginActivity extends AppCompatActivity{
         String passwordStr = password.getText().toString();
 
         if (TextUtils.isEmpty(accountStr)) {
+            showCenterToase("账号不能为空");
             return;
         }
 
         if (TextUtils.isEmpty(passwordStr)) {
+            showCenterToase("密码不能为空");
             return;
         }
 
@@ -69,6 +71,11 @@ public class LoginActivity extends AppCompatActivity{
 
     @OnClick(R.id.register)
     public void register() {
+        showToast("新用户");
+    }
 
+    @OnClick(R.id.tv_forget_password)
+    public void forgetPassword() {
+        showToast("忘记密码");
     }
 }

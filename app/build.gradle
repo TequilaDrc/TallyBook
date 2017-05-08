@@ -36,11 +36,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.kaopiz:kprogresshud:1.0.1'
 
 //    compile (name:'zbarutils', ext:'aar')
 //    compile 'com.tencent.bugly:crashreport:latest.release'
 //    compile 'com.tencent.bugly:nativecrashreport:latest.release'
-//    compile 'com.kaopiz:kprogresshud:1.0.1'
 //    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 //    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 //    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
