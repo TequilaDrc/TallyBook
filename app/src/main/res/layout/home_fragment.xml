@@ -1,32 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<com.tequila.tallybook.widget.DragLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rabbit_bg"
-    android:orientation="vertical" >
+    android:background="@android:color/transparent">
 
-    <RelativeLayout
+    <!--下层 左边的布局-->
+    <include layout="@layout/left_view_layout"/>
+
+    <!--上层 右边的主布局-->
+    <com.tequila.tallybook.widget.CustomRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/blue_bg" >
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="首页"
-            android:textColor="#fff"
-            android:textSize="22sp" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-    <com.tequila.tallybook.view.ImageBarnnerFramLayout
-        android:id="@+id/image_group"
-        android:layout_width="match_parent"
-        android:layout_height="180dp">
+            <RelativeLayout
+                android:id="@+id/rl_title"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:gravity="bottom"
+                android:background="@color/main_color">
 
-    </com.tequila.tallybook.view.ImageBarnnerFramLayout>
+                <include layout="@layout/common_top_bar_layout"/>
+            </RelativeLayout>
 
-</LinearLayout>
+            <!--中间内容后面放入Fragment-->
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!--<fragment-->
+                    <!--android:id="@+id/main_info_fragment"-->
+                    <!--class="com.tequila.jaychou.fragment.MainFragment"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="fill_parent"/>-->
+            </FrameLayout>
+        </LinearLayout>
+    </com.tequila.tallybook.widget.CustomRelativeLayout>
+</com.tequila.tallybook.widget.DragLayout>

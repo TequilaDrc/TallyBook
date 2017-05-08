@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="lv_click_color">#77AAAAAA</color>
+    <color name="main_color">#00BFFF</color>
     <color name="colorOrange">#F98C2E</color>
     <color name="colorGreen">#6CB32A</color>
     <color name="colorBlue">#338BED</color>
@@ -29,10 +31,8 @@
     <color name="level_4">#f1c40f</color>
     <color name="level_5">#2ecc71</color>
     <color name="level_default">#000000</color>
-
     <color name="black_overlay">#66000000</color>
     <color name="devide_line">#CBCED2</color>
-
     <!-- 白色 -->
     <color name="white">#ffffff</color>
     <!-- 透明 -->
@@ -42,7 +42,6 @@
     <color name="windows_color">#F5F5F5</color>
     <color name="bar_color">#232325</color>
     <color name="popbg_color">#49484A</color>
-
     <color name="light_notes_color">#ff999999</color>
     <color name="link_color">#ff4abad7</color>
     <color name="font_value">#ff888271</color>
