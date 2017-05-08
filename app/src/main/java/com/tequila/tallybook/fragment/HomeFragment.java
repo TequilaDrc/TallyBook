@@ -25,8 +25,6 @@ import com.tequila.tallybook.widget.DragLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.tequila.tallybook.R.drawable.f;
-
 /**
  * Created by Tequila on 2017/5/4.
  */
@@ -35,14 +33,14 @@ public class HomeFragment extends Fragment
         implements ImageBarnnerFramLayout.FramLayoutLisenner {
 
     private int[] images = new int[] {
-            R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, f
+            R.drawable.a, R.drawable.b, R.drawable.c,
+            R.drawable.d, R.drawable.e, R.drawable.f
     };
-
-    @Bind(R.id.image_group)
-    ImageBarnnerFramLayout mGroup;
 
     private QuickAdapter<ItemBean> quickAdapter;
 
+    @Bind(R.id.image_group)
+    ImageBarnnerFramLayout mGroup;
     @Bind(R.id.dl)
     DragLayout dl;
     @Bind(R.id.lv)
@@ -52,10 +50,10 @@ public class HomeFragment extends Fragment
     @Bind(R.id.iv_bottom)
     ImageView ivBottom;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         ButterKnife.bind(this, view);
@@ -74,13 +72,13 @@ public class HomeFragment extends Fragment
             //界面打开的时候
             @Override
             public void onOpen() {
-                Toast.makeText(getContext(), "打开",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "打开",Toast.LENGTH_SHORT).show();
             }
 
             //界面关闭的时候
             @Override
             public void onClose() {
-                Toast.makeText(getContext(), "关闭",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "关闭",Toast.LENGTH_SHORT).show();
             }
 
             //界面滑动的时候
@@ -98,8 +96,8 @@ public class HomeFragment extends Fragment
 
             @Override
             protected void convert(BaseAdapterHelper helper, ItemBean item) {
-                helper.setImageResource(R.id.item_img,item.getImg())
-                        .setText(R.id.item_tv,item.getTitle());
+                helper.setImageResource(R.id.item_img, item.getImg())
+                        .setText(R.id.item_tv, item.getTitle());
             }
         });
 
