@@ -2,45 +2,42 @@ package com.tequila.tallybook.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nineoldandroids.view.ViewHelper;
 import com.tequila.tallybook.R;
+import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.ItemBean;
 import com.tequila.tallybook.utils.ItemDataUtils;
-import com.tequila.tallybook.view.ImageBarnnerFramLayout;
-import com.tequila.tallybook.view.ViewBean;
 import com.tequila.tallybook.widget.DragLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Tequila on 2017/5/4.
  */
 
-public class HomeFragment extends Fragment
-        implements ImageBarnnerFramLayout.FramLayoutLisenner {
-
-    private int[] images = new int[] {
-            R.drawable.a, R.drawable.b, R.drawable.c,
-            R.drawable.d, R.drawable.e, R.drawable.f
-    };
+public class HomeFragment extends BaseFragment {
+//        implements ImageBarnnerFramLayout.FramLayoutLisenner {
+//
+//    private int[] images = new int[] {
+//            R.drawable.a, R.drawable.b, R.drawable.c,
+//            R.drawable.d, R.drawable.e, R.drawable.f
+//    };
 
     private QuickAdapter<ItemBean> quickAdapter;
 
-    @Bind(R.id.image_group)
-    ImageBarnnerFramLayout mGroup;
+//    @Bind(R.id.image_group)
+//    ImageBarnnerFramLayout mGroup;
     @Bind(R.id.dl)
     DragLayout dl;
     @Bind(R.id.lv)
@@ -60,7 +57,7 @@ public class HomeFragment extends Fragment
 
         initDragLayout();
         initView();
-        initViewGroup();
+//        initViewGroup();
 
         return view;
     }
@@ -105,7 +102,7 @@ public class HomeFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
-                Toast.makeText(getContext(), "点击 " + ItemDataUtils.getItemBeans().get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                showToast("点击 " + ItemDataUtils.getItemBeans().get(position).getTitle());
             }
         });
 
@@ -117,18 +114,33 @@ public class HomeFragment extends Fragment
         });
     }
 
-    private void initViewGroup() {
-
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        ViewBean.WIDTH = dm.widthPixels;
-
-        mGroup.addResource(images);
-        mGroup.setLisenner(this);
+    @OnClick(R.id.btnQRCode)
+    public void btnQRCode () {
+        showToast("二维码");
     }
 
-    @Override
-    public void clickImageIndex(int pos) {
-        Toast.makeText(getContext(), "点击了第" + pos + "张图", Toast.LENGTH_SHORT).show();
+    @OnClick({R.id.btnSet, R.id.tvSet})
+    public void set() {
+        showToast("设置");
     }
+
+    @OnClick({R.id.btnNeight, R.id.tvNeight})
+    public void neight() {
+        showToast("夜间");
+    }
+
+//    private void initViewGroup() {
+//
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        ViewBean.WIDTH = dm.widthPixels;
+//
+//        mGroup.addResource(images);
+//        mGroup.setLisenner(this);
+//    }
+//
+//    @Override
+//    public void clickImageIndex(int pos) {
+//        Toast.makeText(getContext(), "点击了第" + pos + "张图", Toast.LENGTH_SHORT).show();
+//    }
 }

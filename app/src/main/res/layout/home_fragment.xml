@@ -34,12 +34,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <com.tequila.tallybook.view.ImageBarnnerFramLayout
-                    android:id="@+id/image_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp">
+                <!--<com.tequila.tallybook.view.ImageBarnnerFramLayout-->
+                    <!--android:id="@+id/image_group"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="180dp">-->
 
-                </com.tequila.tallybook.view.ImageBarnnerFramLayout>
+                <!--</com.tequila.tallybook.view.ImageBarnnerFramLayout>-->
 
             </FrameLayout>
         </LinearLayout>

@@ -16,11 +16,13 @@
         android:gravity="bottom|center_horizontal">
 
         <Button
+            android:id="@+id/btnSet"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/btn_setting_selector"/>
 
         <TextView
+            android:id="@+id/tvSet"
             android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,11 +39,13 @@
         android:gravity="bottom|center_horizontal">
 
         <Button
+            android:id="@+id/btnNeight"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/btn_night_selector"/>
 
         <TextView
+            android:id="@+id/tvNeight"
             android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

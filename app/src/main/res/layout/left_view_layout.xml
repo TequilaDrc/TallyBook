@@ -51,6 +51,7 @@
                         android:textSize="15sp" />
 
                     <ImageButton
+                        android:id="@+id/btnQRCode"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="100dp"
