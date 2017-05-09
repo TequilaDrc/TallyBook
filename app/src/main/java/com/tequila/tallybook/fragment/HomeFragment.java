@@ -21,6 +21,7 @@ import com.tequila.tallybook.widget.DragLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * Created by Tequila on 2017/5/4.
@@ -97,21 +98,17 @@ public class HomeFragment extends BaseFragment {
                         .setText(R.id.item_tv, item.getTitle());
             }
         });
+    }
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int position, long arg3) {
-                showToast("点击 " + ItemDataUtils.getItemBeans().get(position).getTitle());
-            }
-        });
+    @OnItemClick(R.id.lv)
+    public void itemClick (AdapterView<?> arg0, View arg1,
+                   int position, long arg3) {
+        showToast("点击 " + ItemDataUtils.getItemBeans().get(position).getTitle());
+    }
 
-        ivIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dl.open();
-            }
-        });
+    @OnClick(R.id.iv_icon)
+    public void iconClick () {
+        dl.open();
     }
 
     @OnClick(R.id.btnQRCode)
