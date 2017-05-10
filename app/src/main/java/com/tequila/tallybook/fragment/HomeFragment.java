@@ -1,7 +1,10 @@
 package com.tequila.tallybook.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.ItemBean;
 import com.tequila.tallybook.utils.ItemDataUtils;
+import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.widget.DragLayout;
 
 import butterknife.Bind;
@@ -124,6 +128,42 @@ public class HomeFragment extends BaseFragment {
     @OnClick({R.id.btnNeight, R.id.tvNeight})
     public void neight() {
         showToast("夜间");
+    }
+
+    /**
+     * 退出Dialog
+     * */
+    protected  void ExitDiaLog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("确认退出吗?");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                getActivity().finish();
+                SysApplication.getInstance().exit();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        ExitDiaLog();
+        return true;
     }
 
 //    private void initViewGroup() {

@@ -1,28 +1,30 @@
 package com.tequila.tallybook;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.TabHost;
 
+import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.fragment.AccountFragment;
 import com.tequila.tallybook.fragment.HomeFragment;
 import com.tequila.tallybook.fragment.LifeFragment;
 import com.tequila.tallybook.fragment.MoreFragment;
+import com.tequila.tallybook.utils.BackHandledInterface;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TabIndicatorView;
 
 public class MainActivity extends FragmentActivity
-        implements TabHost.OnTabChangeListener{
+        implements TabHost.OnTabChangeListener, BackHandledInterface{
 
     private FragmentTabHost tabHost;
     private TabHost.TabSpec spec;
     private TabIndicatorView homeIndicator, lifeIndicator, accountIndicator, moreIndicator;
+
+    private BaseFragment mBackHandedFragment;
+    private boolean hadIntercept;
 
     private final static String TAB_HOME = "home";
     private final static String TAB_LIFE = "life";
@@ -109,46 +111,20 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    /**
-     * 退出Dialog
-     * */
-    protected  void ExitDiaLog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("确认退出吗?");
-        builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                SysApplication.getInstance().exit();
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.create().show();
+    @Override
+    public void setSelectedFragment(BaseFragment selectedFragment) {
+        this.mBackHandedFragment = selectedFragment;
     }
 
-    /**
-     * 获取返回键点击退出
-     * */
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-
-            ExitDiaLog();
-
-            return false;
+    @Override
+    public void onBackPressed() {
+        if(mBackHandedFragment == null || !mBackHandedFragment.onBackPressed()){
+            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                super.onBackPressed();
+            }else{
+                getSupportFragmentManager().popBackStack();
+            }
         }
-        return false;
     }
+
 }
