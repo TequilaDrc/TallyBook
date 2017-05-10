@@ -138,6 +138,7 @@ public class HomeFragment extends BaseFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("确认退出吗?");
         builder.setTitle("提示");
+
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -151,12 +152,14 @@ public class HomeFragment extends BaseFragment {
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
+
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
+
         builder.create().show();
     }
 
