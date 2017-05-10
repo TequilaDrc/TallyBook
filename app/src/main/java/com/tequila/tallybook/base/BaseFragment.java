@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.tequila.tallybook.utils.BackHandledInterface;
+import com.tequila.tallybook.utils.ProgressUtils;
 
 /**
  * Created by Tequila on 2017/5/9.
@@ -16,6 +19,10 @@ import com.tequila.tallybook.utils.BackHandledInterface;
 public abstract class BaseFragment extends Fragment {
 
     protected BackHandledInterface mBackHandledInterface;
+
+    public KProgressHUD kProgressHUD;
+
+    InputMethodManager imm; // 输入法管理
 
     /**
      * 所有继承BackHandledFragment的子类都将在这个方法中实现物理Back键按下后的逻辑
@@ -52,5 +59,34 @@ public abstract class BaseFragment extends Fragment {
         Toast toast = Toast.makeText(getContext(), info, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    /**
+     * 等待显示
+     * */
+    public void showWait() {
+        kProgressHUD = ProgressUtils.showWait(getContext());
+    }
+
+    public void showWait(String msg) {
+        kProgressHUD = ProgressUtils.showWait(getContext(), msg);
+    }
+
+    /**
+     * 等待消失
+     * */
+    public void hideWait() {
+        if (kProgressHUD != null) {
+            kProgressHUD.dismiss();
+        }
+    }
+
+    // 关闭输入法
+    public void closeInputMethod() {
+
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }
