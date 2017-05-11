@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="kprogresshud-1.0.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/37d22dda048b6dcc8c46894e7a46643be10fcf47/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/37d22dda048b6dcc8c46894e7a46643be10fcf47/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/1b00bd7bdeacff5d557f0c37a729d7b4135a510a/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/1b00bd7bdeacff5d557f0c37a729d7b4135a510a/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
