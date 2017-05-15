@@ -45,7 +45,7 @@
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
     <application
-        android:name=".activity.SharedApplication"
+        android:name=".SharedApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_Chinese_name"

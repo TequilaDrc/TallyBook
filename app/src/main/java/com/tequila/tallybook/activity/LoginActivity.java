@@ -1,9 +1,12 @@
 package com.tequila.tallybook.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -11,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
+import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TextURLView;
 
 import butterknife.Bind;
@@ -84,5 +88,51 @@ public class LoginActivity extends BaseActivity{
     @OnClick(R.id.tv_forget_password)
     public void forgetPassword() {
         showToast("忘记密码");
+    }
+
+    /**
+     * 退出Dialog
+     * */
+    protected  void ExitDiaLog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setMessage("确认退出吗?");
+        builder.setTitle("提示");
+
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                SysApplication.getInstance().exit();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+
+    /**
+     * 获取返回键点击退出
+     */
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            ExitDiaLog();
+
+            return false;
+        }
+        return false;
     }
 }

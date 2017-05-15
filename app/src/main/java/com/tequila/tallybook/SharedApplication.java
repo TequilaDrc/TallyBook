@@ -1,4 +1,4 @@
-package com.tequila.tallybook.activity;
+package com.tequila.tallybook;
 
 import android.app.Application;
 import android.content.Context;
