@@ -39,7 +39,7 @@ dependencies {
     compile 'com.kaopiz:kprogresshud:1.0.1'
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'com.joanzapata.android:base-adapter-helper:1.1.11'
-
+    compile 'org.greenrobot:eventbus:3.0.0'
 
 //    compile (name:'zbarutils', ext:'aar')
 //    compile 'com.tencent.bugly:crashreport:latest.release'
@@ -48,6 +48,5 @@ dependencies {
 //    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 //    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 //    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
-//    compile 'org.greenrobot:eventbus:3.0.0'
 //    compile files('libs/fastjson-1.2.12.jar')
 }
