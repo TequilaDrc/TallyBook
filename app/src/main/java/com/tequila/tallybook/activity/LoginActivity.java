@@ -3,6 +3,7 @@ package com.tequila.tallybook.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -55,23 +56,24 @@ public class LoginActivity extends BaseActivity{
         String accountStr = account.getText().toString();
         String passwordStr = password.getText().toString();
 
-//        if (TextUtils.isEmpty(accountStr)) {
-//            showCenterToase("账号不能为空");
-//            return;
-//        }
-//
-//        if (TextUtils.isEmpty(passwordStr)) {
-//            showCenterToase("密码不能为空");
-//            return;
-//        }
+        if (TextUtils.isEmpty(accountStr)) {
+            showCenterToase("账号不能为空");
+            return;
+        }
 
-        startActivity(new Intent(this, MainActivity.class));
+        if (TextUtils.isEmpty(passwordStr)) {
+            showCenterToase("密码不能为空");
+            return;
+        }
+
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
     @OnClick(R.id.register)
     public void register() {
-        showToast("新用户");
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        finish();
     }
 
     @OnClick(R.id.tv_forget_password)
