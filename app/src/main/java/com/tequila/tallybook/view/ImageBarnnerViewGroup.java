@@ -13,7 +13,7 @@ import android.widget.Scroller;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.tequila.tallybook.SharedApplication.context;
+import static com.tequila.tallybook.activity.SharedApplication.context;
 
 
 /**

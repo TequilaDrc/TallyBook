@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import static com.tequila.tallybook.SharedApplication.context;
+import static com.tequila.tallybook.activity.SharedApplication.context;
 
 /**
  * Created by tequila on 2017/4/13.

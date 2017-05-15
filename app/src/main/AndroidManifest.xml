@@ -45,7 +45,7 @@
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
     <application
-        android:name=".SharedApplication"
+        android:name=".activity.SharedApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_Chinese_name"
@@ -53,7 +53,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
 
-        <activity android:name=".StartActivity"
+        <activity android:name=".activity.StartActivity"
             android:theme="@style/Theme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,12 +63,12 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_English_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:alwaysRetainTaskState="true"
