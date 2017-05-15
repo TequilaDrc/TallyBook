@@ -25,7 +25,6 @@ public class MainActivity extends FragmentActivity
     private TabIndicatorView homeIndicator, lifeIndicator, accountIndicator, moreIndicator;
 
     private BaseFragment mBackHandedFragment;
-    private boolean hadIntercept;
 
     private final static String TAB_HOME = "home";
     private final static String TAB_LIFE = "life";
@@ -48,6 +47,9 @@ public class MainActivity extends FragmentActivity
         super.onNewIntent(intent);
     }
 
+    /**
+     * 初始化界面
+     */
     private void initView() {
 
         tabHost = (FragmentTabHost) findViewById(R.id.tabhost);

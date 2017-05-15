@@ -57,6 +57,9 @@ public class RegisterActivity extends BaseActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_back_arrow);
     }
 
+    /**
+     * 注册按钮
+     */
     @OnClick(R.id.btn_register)
     public void registerClik() {
         if (TextUtils.isEmpty(et_userName.getText().toString())) {
@@ -67,6 +70,11 @@ public class RegisterActivity extends BaseActivity {
         if (TextUtils.isEmpty(et_phoneNumber.getText().toString())) {
             showCenterToase("手机号不能为空");
             return;
+        } else {
+            if (!isMobileNO(et_phoneNumber.getText().toString())) {
+                showCenterToase("请输入正确的手机号");
+                return;
+            }
         }
 
         if (registerInfo(et_userName.getText().toString(), et_phoneNumber.getText().toString(), et_passWord.getText().toString())) {
@@ -82,6 +90,21 @@ public class RegisterActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * 判断是否是输入正确的手机号
+     * @param mobiles
+     * @return
+     */
+    public static boolean isMobileNO(String mobiles) {
+
+        String telRegex = "[1][3458]\\d{9}";//"[1]"代表第1位为数字1，"[3458]"代表第二位可以为3、4、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
+
+        return mobiles.matches(telRegex);
+    }
+
+    /**
+     * 跳转登陆界面
+     */
     private void gotoLoginActivity() {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         finish();

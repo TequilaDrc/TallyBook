@@ -41,15 +41,14 @@ public class LoginActivity extends BaseActivity{
 
         mTextViewURL.setText(R.string.forget_password);
 
-        init();
-    }
-
-    private void init(){
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.login_anim);
         anim.setFillAfter(true);
         rl_user.startAnimation(anim);
     }
 
+    /**
+     * 登陆按钮
+     */
     @OnClick(R.id.login)
     public void login() {
 
@@ -70,12 +69,18 @@ public class LoginActivity extends BaseActivity{
         finish();
     }
 
+    /**
+     * 注册按钮
+     */
     @OnClick(R.id.register)
     public void register() {
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         finish();
     }
 
+    /**
+     * 忘记密码按钮
+     */
     @OnClick(R.id.tv_forget_password)
     public void forgetPassword() {
         showToast("忘记密码");
