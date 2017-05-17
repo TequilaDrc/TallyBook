@@ -5,6 +5,7 @@ import com.tequila.tallybook.mode.ResultModel;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -12,6 +13,9 @@ import retrofit2.http.POST;
  */
 
 public interface DataService {
+
+    @GET("networkVerify.php")
+    Call<ResultModel> networkVerify();
 
     @FormUrlEncoded
     @POST("addUser.php")

@@ -6,6 +6,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 
 /**
  * Created by Tequila on 2017/5/8.
+ * KProgressHUD等待进度条
  */
 
 public class ProgressUtils {

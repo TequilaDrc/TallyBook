@@ -2,19 +2,27 @@ package com.tequila.tallybook.base;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.net.DataService;
 import com.tequila.tallybook.net.NetUtils;
 import com.tequila.tallybook.utils.ProgressUtils;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/8.
@@ -93,5 +101,42 @@ public class BaseActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(this, info, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    // 判断网络是否可用
+    public boolean isNetworkAvailable() {
+        // 得到网络连接信息
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // 去进行判断网络是否连接
+        if (manager.getActiveNetworkInfo() != null) {
+            if (manager.getActiveNetworkInfo().isAvailable()) {
+                // 检测能不能连接接口
+                if (!TextUtils.isEmpty(networkAvailable())) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 验证程序能否访问服务器
+     * @return
+     */
+    private String networkAvailable() {
+        String str = "";
+
+        Call<ResultModel> call = getDataService().networkVerify();
+
+        try {
+            Response<ResultModel> response = call.execute();
+            ResultModel model = response.body();
+            if (model.getSucceedFlag().equals("1")) {
+                str = model.getReturnInfo();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            str = "";
+        }
+
+        return str;
     }
 }

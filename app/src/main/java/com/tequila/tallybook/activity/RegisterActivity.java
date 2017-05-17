@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.mode.ResultModel;
+import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 
 import butterknife.Bind;
@@ -82,15 +82,10 @@ public class RegisterActivity extends BaseActivity {
             }
         }
 
-        if (registerInfo(et_userName.getText().toString(), et_phoneNumber.getText().toString(), et_passWord.getText().toString())) {
-            showCenterToase("注册成功!");
-            gotoLoginActivity();
-        } else {
-            showCenterToase("注册失败!");
-        }
+        registerInfo(et_userName.getText().toString(), et_phoneNumber.getText().toString(), et_passWord.getText().toString());
     }
 
-    private boolean registerInfo(String userName, String userPhone, String userPasswd) {
+    private void registerInfo(final String userName, final String userPhone, final String userPasswd) {
 
         Call<ResultModel> test = getDataService().addUser(userName, userPhone, userPasswd);
         test.enqueue(new Callback<ResultModel>() {
@@ -99,17 +94,34 @@ public class RegisterActivity extends BaseActivity {
 
                 ResultModel rst = response.body();
                 if (rst != null) {
-                    showCenterToase(rst.getReturnInfo());
+                    if (rst.getSucceedFlag().equals("1")) {
+
+                        setLoginInfo(userName, userPhone, userPasswd);
+                        showCenterToase("注册成功!");
+                        gotoLoginActivity();
+                    } else {
+                        showCenterToase("注册失败!" + rst.getErrorInfo());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ResultModel> call, Throwable t) {
-                Log.i("tequila", "fail:" + t.getMessage());
+                showCenterToase("注册失败!" + t.getMessage());
             }
         });
-        
-        return true;
+    }
+
+    /**
+     * 保存登陆信息
+     * @param userName
+     * @param userPhone
+     * @param userPasswd
+     */
+    private void setLoginInfo(String userName, String userPhone, String userPasswd) {
+        Preference.getInstance(RegisterActivity.this).setLoginName(userName);
+        Preference.getInstance(RegisterActivity.this).setPassword(userPasswd);
+        Preference.getInstance(RegisterActivity.this).setLoginPhone(userPhone);
     }
 
     /**

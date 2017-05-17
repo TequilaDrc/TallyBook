@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
+import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TextURLView;
 
@@ -48,6 +49,12 @@ public class LoginActivity extends BaseActivity{
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.login_anim);
         anim.setFillAfter(true);
         rl_user.startAnimation(anim);
+
+        String loginName = Preference.getInstance(this).getLoginName();
+        String passwd = Preference.getInstance(this).getPassword();
+
+        if (!TextUtils.isEmpty(loginName)) account.setText(loginName);
+        if (!TextUtils.isEmpty(passwd)) password.setText(passwd);
     }
 
     /**
@@ -78,8 +85,12 @@ public class LoginActivity extends BaseActivity{
      */
     @OnClick(R.id.register)
     public void register() {
-        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-        finish();
+        if (isNetworkAvailable()) {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            finish();
+        } else {
+            showCenterToase("网络异常,请检查网络!");
+        }
     }
 
     /**
