@@ -92,8 +92,6 @@ public class RegisterActivity extends BaseActivity {
 
     private boolean registerInfo(String userName, String userPhone, String userPasswd) {
 
-
-
         Call<ResultModel> test = getDataService().addUser(userName, userPhone, userPasswd);
         test.enqueue(new Callback<ResultModel>() {
             @Override
