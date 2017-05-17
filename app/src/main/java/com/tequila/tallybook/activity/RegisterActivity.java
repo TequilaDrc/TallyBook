@@ -5,17 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
+import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.utils.SysApplication;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/15.
@@ -87,6 +92,25 @@ public class RegisterActivity extends BaseActivity {
 
     private boolean registerInfo(String userName, String userPhone, String userPasswd) {
 
+
+
+        Call<ResultModel> test = getDataService().addUser(userName, userPhone, userPasswd);
+        test.enqueue(new Callback<ResultModel>() {
+            @Override
+            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+
+                ResultModel rst = response.body();
+                if (rst != null) {
+                    showCenterToase(rst.getReturnInfo());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultModel> call, Throwable t) {
+                Log.i("tequila", "fail:" + t.getMessage());
+            }
+        });
+        
         return true;
     }
 

@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.tequila.tallybook.net.DataService;
+import com.tequila.tallybook.net.NetUtils;
 import com.tequila.tallybook.utils.ProgressUtils;
 
 /**
@@ -26,6 +28,8 @@ public class BaseActivity extends AppCompatActivity {
     public static int screen_height = 0;
 
     InputMethodManager imm; // 输入法管理
+
+    private DataService dataService = NetUtils.getDataService();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,10 @@ public class BaseActivity extends AppCompatActivity {
 
         //禁止旋转屏幕
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    public DataService getDataService() {
+        return dataService;
     }
 
     /**
