@@ -46,6 +46,7 @@ public class HomeFragment extends BaseFragment {
 //            R.drawable.d, R.drawable.e, R.drawable.f
 //    };
 
+    private View mRootView;//缓存fragment View
     private QuickAdapter<ItemBean> quickAdapter;
 
 //    @Bind(R.id.image_group)
@@ -65,9 +66,17 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        ButterKnife.bind(this, view);
+        if(mRootView == null){
+            mRootView = inflater.inflate(R.layout.home_fragment, container, false);
+        }
+
+        ViewGroup mViewGroup = (ViewGroup)mRootView.getParent();
+        if(mViewGroup!=null){
+            mViewGroup.removeView(mRootView);
+        }
+
+        ButterKnife.bind(this, mRootView);
 
         initDragLayout();
         initView();
@@ -75,7 +84,7 @@ public class HomeFragment extends BaseFragment {
 
         EventBus.getDefault().register(this);
 
-        return view;
+        return mRootView;
     }
 
     @Override

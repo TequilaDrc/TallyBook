@@ -22,6 +22,9 @@ import butterknife.OnClick;
 
 public class LifeFragment extends BaseFragment {
 
+    private View mRootView;
+    private UserBean bean = new UserBean();
+
     @Bind(R.id.edit_money)
     EditText edit_money;
     @Bind(R.id.edit_plu)
@@ -29,16 +32,23 @@ public class LifeFragment extends BaseFragment {
     @Bind(R.id.edit_remark)
     EditText edit_remark;
 
-    private UserBean bean = new UserBean();
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.life_fragment, container, false);
-        ButterKnife.bind(this, view);
 
-        return view;
+        if(mRootView == null){
+            mRootView = inflater.inflate(R.layout.life_fragment, container, false);
+        }
+
+        ViewGroup mViewGroup = (ViewGroup)mRootView.getParent();
+        if(mViewGroup!=null){
+            mViewGroup.removeView(mRootView);
+        }
+
+        ButterKnife.bind(this, mRootView);
+
+        return mRootView;
     }
 
 //    private void getData() {

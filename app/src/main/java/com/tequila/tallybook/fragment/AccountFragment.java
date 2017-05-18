@@ -15,11 +15,22 @@ import com.tequila.tallybook.base.BaseFragment;
 
 public class AccountFragment extends BaseFragment {
 
+    private View mRootView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
-        return view;
+
+        if(mRootView == null){
+            mRootView = inflater.inflate(R.layout.account_fragment, container, false);
+        }
+
+        ViewGroup mViewGroup = (ViewGroup)mRootView.getParent();
+        if(mViewGroup!=null){
+            mViewGroup.removeView(mRootView);
+        }
+
+        return mRootView;
     }
 
     @Override

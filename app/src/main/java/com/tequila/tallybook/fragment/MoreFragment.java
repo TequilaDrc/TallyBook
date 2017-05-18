@@ -21,21 +21,30 @@ import butterknife.ButterKnife;
 
 public class MoreFragment extends BaseFragment {
 
+    private View mRootView;
+    private final String WebUrl = "http://www.tequilastudio.cn/index.html";
+
     @Bind(R.id.webview)
     WebView webview;
-
-    private final String WebUrl = "http://www.tequilastudio.cn/index.html";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.more_fragment, container, false);
 
-        ButterKnife.bind(this, view);
+        if(mRootView == null){
+            mRootView = inflater.inflate(R.layout.more_fragment, container, false);
+        }
+
+        ViewGroup mViewGroup = (ViewGroup)mRootView.getParent();
+        if(mViewGroup!=null){
+            mViewGroup.removeView(mRootView);
+        }
+
+        ButterKnife.bind(this, mRootView);
 
         initView();
 
-        return view;
+        return mRootView;
     }
 
     private void initView() {
