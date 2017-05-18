@@ -73,6 +73,12 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     private void initDragLayout() {
 
         dl.setDragListener(new DragLayout.DragListener() {
