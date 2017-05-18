@@ -15,7 +15,7 @@ public class ResultModel {
 
     @SerializedName("returnInfo")
     @Expose
-    private String returnInfo;
+    private Object returnInfo;
 
     @SerializedName("succeedFlag")
     @Expose
@@ -44,7 +44,7 @@ public class ResultModel {
      * @return
      * The returnInfo
      */
-    public String getReturnInfo() {
+    public Object getReturnInfo() {
         return returnInfo;
     }
 
@@ -53,7 +53,7 @@ public class ResultModel {
      * @param returnInfo
      * The returnInfo
      */
-    public void setReturnInfo(String returnInfo) {
+    public void setReturnInfo(Object returnInfo) {
         this.returnInfo = returnInfo;
     }
 

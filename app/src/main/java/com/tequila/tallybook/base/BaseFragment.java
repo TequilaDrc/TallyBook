@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.tequila.tallybook.net.DataService;
+import com.tequila.tallybook.net.NetUtils;
 import com.tequila.tallybook.utils.BackHandledInterface;
 import com.tequila.tallybook.utils.ProgressUtils;
 
@@ -23,6 +25,8 @@ public abstract class BaseFragment extends Fragment {
     public KProgressHUD kProgressHUD;
 
     InputMethodManager imm; // 输入法管理
+
+    private DataService dataService = NetUtils.getDataService();
 
     /**
      * 所有继承BackHandledFragment的子类都将在这个方法中实现物理Back键按下后的逻辑
@@ -46,6 +50,10 @@ public abstract class BaseFragment extends Fragment {
         super.onStart();
         //告诉FragmentActivity，当前Fragment在栈顶
         mBackHandledInterface.setSelectedFragment(this);
+    }
+
+    public DataService getDataService() {
+        return dataService;
     }
 
     // 显示Toast

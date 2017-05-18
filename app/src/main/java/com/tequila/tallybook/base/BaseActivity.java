@@ -130,7 +130,7 @@ public class BaseActivity extends AppCompatActivity {
             Response<ResultModel> response = call.execute();
             ResultModel model = response.body();
             if (model.getSucceedFlag().equals("1")) {
-                str = model.getReturnInfo();
+                str = model.getReturnInfo().toString();
             }
         } catch (IOException e) {
             e.printStackTrace();

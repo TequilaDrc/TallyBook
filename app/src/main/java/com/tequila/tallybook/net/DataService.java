@@ -20,4 +20,7 @@ public interface DataService {
     @FormUrlEncoded
     @POST("addUser.php")
     Call<ResultModel> addUser(@Field("sUserName") String sUserName, @Field("sUserPhone") String sUserPhone, @Field("sPasswd") String sPasswd);
+
+    @POST("SynchronousData.php")
+    Call<ResultModel> synchronousData();
 }

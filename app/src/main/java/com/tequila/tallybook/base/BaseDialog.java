@@ -6,6 +6,9 @@ import android.view.Gravity;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.tequila.tallybook.net.DataService;
+import com.tequila.tallybook.net.NetUtils;
+
 /**
  * Created by Tequila on 2017/5/15.
  */
@@ -13,6 +16,7 @@ import android.widget.Toast;
 public class BaseDialog extends Dialog {
 
     protected Context context;
+    private DataService dataService = NetUtils.getDataService();
 
     public BaseDialog(Context context) {
         super(context);
@@ -20,6 +24,10 @@ public class BaseDialog extends Dialog {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);// android:windowNoTitle
         setCanceledOnTouchOutside(false);
+    }
+
+    public DataService getDataService() {
+        return dataService;
     }
 
     // 显示Toast
