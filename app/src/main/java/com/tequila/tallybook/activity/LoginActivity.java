@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.tequila.tallybook.Debug;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.utils.Preference;
@@ -76,12 +77,15 @@ public class LoginActivity extends BaseActivity{
             return;
         }
 
-        if (isNetworkAvailable()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        } else {
-            showCenterToase("网络异常,请检查网络!");
+        if (!Debug.isDebug()) {
+            if (!isNetworkAvailable()) {
+                showCenterToase("网络异常,请检查网络!");
+                return;
+            }
         }
+
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     /**

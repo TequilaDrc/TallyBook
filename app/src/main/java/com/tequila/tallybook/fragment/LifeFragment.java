@@ -30,7 +30,7 @@ public class LifeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.life_fragment, container, false);
 
-        getData();
+//        getData();
         return view;
     }
 

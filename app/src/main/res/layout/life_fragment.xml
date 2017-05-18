@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/rabbit_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,5 +19,165 @@
             android:textColor="#fff"
             android:textSize="22sp" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fadingEdge="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人 数:"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/acm_inputbox">
+
+                        <ImageButton
+                            android:id="@+id/btnDai"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/blackdai"/>
+
+                        <ImageButton
+                            android:id="@+id/btnYang"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/blackyang"/>
+
+                        <ImageButton
+                            android:id="@+id/btnXu"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/blackxu"/>
+
+                        <ImageButton
+                            android:id="@+id/btnZhou"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/blackzhou"/>
+
+                        <ImageButton
+                            android:id="@+id/btnZhang"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/blackzhang"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="金 额:"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/edit_money"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:inputType="numberDecimal"
+                        android:maxLength="10"
+                        android:hint="金  额"
+                        android:textColorHint="@color/c1"
+                        android:background="@drawable/acm_inputbox"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="购 买 物 品:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="26sp"/>
+
+                    <EditText
+                        android:id="@+id/edit_plu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="true"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="10"
+                        android:scrollbars="vertical"
+                        android:background="@drawable/acm_inputbox" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备 注:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="26sp"/>
+
+                    <EditText
+                        android:id="@+id/edit_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="true"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="10"
+                        android:scrollbars="vertical"
+                        android:background="@drawable/acm_inputbox" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+         </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>
