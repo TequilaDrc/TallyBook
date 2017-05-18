@@ -76,8 +76,12 @@ public class LoginActivity extends BaseActivity{
             return;
         }
 
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish();
+        if (isNetworkAvailable()) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        } else {
+            showCenterToase("网络异常,请检查网络!");
+        }
     }
 
     /**
@@ -98,7 +102,12 @@ public class LoginActivity extends BaseActivity{
      */
     @OnClick(R.id.tv_forget_password)
     public void forgetPassword() {
-        showToast("忘记密码");
+
+        if (isNetworkAvailable()) {
+            showToast("忘记密码");
+        } else {
+            showCenterToase("网络异常,请检查网络!");
+        }
     }
 
     /**
