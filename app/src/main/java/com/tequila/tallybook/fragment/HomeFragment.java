@@ -3,12 +3,14 @@ package com.tequila.tallybook.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
@@ -20,6 +22,7 @@ import com.tequila.tallybook.bean.ItemBean;
 import com.tequila.tallybook.dialog.ExitDialog;
 import com.tequila.tallybook.event.ExitEvent;
 import com.tequila.tallybook.utils.ItemDataUtils;
+import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.widget.DragLayout;
 
@@ -55,6 +58,8 @@ public class HomeFragment extends BaseFragment {
     ImageView ivIcon;
     @Bind(R.id.iv_bottom)
     ImageView ivBottom;
+    @Bind(R.id.name)
+    TextView name;
 
     @Nullable
     @Override
@@ -104,6 +109,14 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
+
+        String loginName = Preference.getInstance(getContext()).getLoginName();
+
+        if (TextUtils.isEmpty(loginName) || loginName == null) {
+            name.setText("林兮枫");
+        } else {
+            name.setText(loginName);
+        }
 
         lv.setAdapter(quickAdapter = new QuickAdapter<ItemBean>(getContext(),
                 R.layout.item_left_layout, ItemDataUtils.getItemBeans()) {

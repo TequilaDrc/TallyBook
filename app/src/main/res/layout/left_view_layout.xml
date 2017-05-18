@@ -25,7 +25,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher"
+                android:background="@drawable/login_default_avatar"
                 app:roundWidth="25dp"
                 app:roundHeight="25dp"/>
 
@@ -46,9 +46,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:text="名字:周杰伦"
+                        android:text="名称"
                         android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+                        android:textSize="26sp" />
 
                     <ImageButton
                         android:id="@+id/btnQRCode"
@@ -61,15 +61,6 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:text="网址:www.jaycn.com"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -78,6 +69,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:layout_marginRight="100dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -92,7 +84,7 @@
                 android:textColor="#676767"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="地表最强!"/>
+                android:text="北冥有鱼 其名为鲲 鲲之大 一锅炖不下 化而为鸟 其名为鹏 鹏之大 需要两个烧烤架 一个孜然 一个微辣"/>
 
         </LinearLayout>
 
