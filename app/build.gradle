@@ -48,8 +48,13 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
-//    compile files('libs/fastjson-1.2.12.jar')
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
+
+
+
+
+//    compile files('libs/fastjson-1.2.12.jar')
 //    compile (name:'zbarutils', ext:'aar')
 //    compile 'com.tencent.bugly:crashreport:latest.release'
 //    compile 'com.tencent.bugly:nativecrashreport:latest.release'

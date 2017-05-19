@@ -104,6 +104,7 @@ public class LoginActivity extends BaseActivity{
 
     private void loginvalidation (String loginName, String loginPasswd) {
 
+        showWait();
         Call<ResultModel> call = getDataService().loginvalidation(loginName, loginPasswd);
         call.enqueue(new Callback<ResultModel>() {
             @Override
@@ -119,12 +120,14 @@ public class LoginActivity extends BaseActivity{
 
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
+
+                    hideWait();
                 }
             }
 
             @Override
             public void onFailure(Call<ResultModel> call, Throwable t) {
-                showCenterToase(t.getMessage());
+                hideWait();
             }
         });
     }
