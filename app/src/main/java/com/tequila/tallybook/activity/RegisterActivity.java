@@ -12,7 +12,7 @@ import android.widget.EditText;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.mode.ResultModel;
-import com.tequila.tallybook.utils.Preference;
+import com.tequila.tallybook.mode.UsrUserModel;
 import com.tequila.tallybook.utils.SysApplication;
 
 import butterknife.Bind;
@@ -95,10 +95,18 @@ public class RegisterActivity extends BaseActivity {
                 ResultModel rst = response.body();
                 if (rst != null) {
                     if (rst.getSucceedFlag().equals("1")) {
-
-                        setLoginInfo(userName, userPhone, userPasswd);
                         showCenterToase("注册成功!");
-                        gotoLoginActivity();
+
+                        UsrUserModel user = new UsrUserModel();
+                        user.setsUserName(userName);
+                        user.setsUserPhone(userPhone);
+                        user.setsPasswd(userPasswd);
+
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("user", user);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     } else {
                         showCenterToase("注册失败!" + rst.getErrorInfo());
                     }
@@ -110,18 +118,6 @@ public class RegisterActivity extends BaseActivity {
                 showCenterToase("注册失败!" + t.getMessage());
             }
         });
-    }
-
-    /**
-     * 保存登陆信息
-     * @param userName
-     * @param userPhone
-     * @param userPasswd
-     */
-    private void setLoginInfo(String userName, String userPhone, String userPasswd) {
-        Preference.getInstance(RegisterActivity.this).setLoginName(userName);
-        Preference.getInstance(RegisterActivity.this).setPassword(userPasswd);
-        Preference.getInstance(RegisterActivity.this).setLoginPhone(userPhone);
     }
 
     /**

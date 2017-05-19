@@ -1,10 +1,12 @@
 package com.tequila.tallybook.mode;
 
+import java.io.Serializable;
+
 /**
  * Created by Tequila on 2017/5/18.
  */
 
-public class UsrUserModel {
+public class UsrUserModel implements Serializable {
 
     private String sUserName = "";
     private String sUserPhone = "";

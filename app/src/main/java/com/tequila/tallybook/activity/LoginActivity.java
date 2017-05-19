@@ -12,9 +12,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.tequila.tallybook.Debug;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
+import com.tequila.tallybook.mode.ResultModel;
+import com.tequila.tallybook.mode.UsrUserModel;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TextURLView;
@@ -22,6 +25,9 @@ import com.tequila.tallybook.view.TextURLView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/8.
@@ -38,10 +44,14 @@ public class LoginActivity extends BaseActivity{
     @Bind(R.id.password)
     EditText password;
 
+    private UsrUserModel user;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        user = (UsrUserModel)getIntent().getSerializableExtra("user");
 
         ButterKnife.bind(this);
 
@@ -56,6 +66,11 @@ public class LoginActivity extends BaseActivity{
 
         if (!TextUtils.isEmpty(loginName)) account.setText(loginName);
         if (!TextUtils.isEmpty(passwd)) password.setText(passwd);
+
+        if (user != null) {
+            account.setText(user.getsUserName());
+            account.setText(user.getsPasswd());
+        }
     }
 
     /**
@@ -84,8 +99,34 @@ public class LoginActivity extends BaseActivity{
             }
         }
 
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish();
+        loginvalidation(accountStr, passwordStr);
+    }
+
+    private void loginvalidation (String loginName, String loginPasswd) {
+
+        Call<ResultModel> call = getDataService().loginvalidation(loginName, loginPasswd);
+        call.enqueue(new Callback<ResultModel>() {
+            @Override
+            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+                ResultModel data = response.body();
+                if (data.getSucceedFlag().equals("1")) {
+
+                    UsrUserModel user = new Gson().fromJson(data.getReturnInfo().toString(), UsrUserModel.class);
+
+                    Preference.getInstance(LoginActivity.this).setLoginName(user.getsUserName());
+                    Preference.getInstance(LoginActivity.this).setPassword(user.getsPasswd());
+                    Preference.getInstance(LoginActivity.this).setLoginPhone(user.getsUserPhone());
+
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultModel> call, Throwable t) {
+                showCenterToase(t.getMessage());
+            }
+        });
     }
 
     /**

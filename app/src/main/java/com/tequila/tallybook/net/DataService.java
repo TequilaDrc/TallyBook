@@ -14,13 +14,17 @@ import retrofit2.http.POST;
 
 public interface DataService {
 
-    @GET("networkVerify.php")
+    @GET("networkverify.php")
     Call<ResultModel> networkVerify();
 
     @FormUrlEncoded
-    @POST("addUser.php")
+    @POST("adduser.php")
     Call<ResultModel> addUser(@Field("sUserName") String sUserName, @Field("sUserPhone") String sUserPhone, @Field("sPasswd") String sPasswd);
 
-    @POST("SynchronousData.php")
+    @FormUrlEncoded
+    @POST("loginvalidation.php")
+    Call<ResultModel> loginvalidation(@Field("sUserName") String sUserName, @Field("sPasswd") String sPasswd);
+
+    @POST("synchronousdata.php")
     Call<ResultModel> synchronousData();
 }
