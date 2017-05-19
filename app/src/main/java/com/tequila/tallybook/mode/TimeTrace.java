@@ -11,9 +11,10 @@ public class TimeTrace {
     private String acceptStation;
     private String name;
 
-    public TimeTrace(String acceptTime, String acceptStation) {
+    public TimeTrace(String acceptTime, String acceptStation, String name) {
         this.acceptTime = acceptTime;
         this.acceptStation = acceptStation;
+        this.name = name;
     }
 
     public String getAcceptTime() {

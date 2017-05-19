@@ -97,9 +97,12 @@ public class LoginActivity extends BaseActivity{
                 showCenterToase("网络异常,请检查网络!");
                 return;
             }
-        }
 
-        loginvalidation(accountStr, passwordStr);
+            loginvalidation(accountStr, passwordStr);
+        } else {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     private void loginvalidation (String loginName, String loginPasswd) {

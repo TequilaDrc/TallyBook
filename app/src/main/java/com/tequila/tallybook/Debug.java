@@ -6,7 +6,7 @@ package com.tequila.tallybook;
 
 public class Debug {
 
-    private static boolean debug = false;
+    private static boolean debug = true;
 
     public static boolean isDebug() {
         return debug;

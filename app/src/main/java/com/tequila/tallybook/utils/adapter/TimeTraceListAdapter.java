@@ -60,15 +60,19 @@ public class TimeTraceListAdapter extends RecyclerView.Adapter<RecyclerView.View
             // 第一行头的竖线不显示
             itemHolder.tvTopLine.setVisibility(View.INVISIBLE);
             // 字体颜色加深
-            itemHolder.tvAcceptTime.setTextColor(0xff555555);
-            itemHolder.tvAcceptStation.setTextColor(0xff555555);
-            itemHolder.tvDot.setBackgroundResource(R.drawable.timelline_dot_first);
+//            itemHolder.tvAcceptTime.setTextColor(0xff555555);
+//            itemHolder.tvAcceptStation.setTextColor(0xff555555);
+//            itemHolder.tvDot.setBackgroundResource(R.drawable.timelline_dot_first);
         } else if (getItemViewType(position) == TYPE_NORMAL) {
             itemHolder.tvTopLine.setVisibility(View.VISIBLE);
-            itemHolder.tvAcceptTime.setTextColor(0xff999999);
-            itemHolder.tvAcceptStation.setTextColor(0xff999999);
-            itemHolder.tvDot.setBackgroundResource(R.drawable.timelline_dot_normal);
+//            itemHolder.tvAcceptTime.setTextColor(0xff999999);
+//            itemHolder.tvAcceptStation.setTextColor(0xff999999);
+//            itemHolder.tvDot.setBackgroundResource(R.drawable.timelline_dot_normal);
         }
+
+        itemHolder.tvAcceptTime.setTextColor(0xff999999);
+        itemHolder.tvAcceptStation.setTextColor(0xff999999);
+        itemHolder.tvDot.setBackgroundResource(R.drawable.timelline_dot_normal);
 
         itemHolder.bindHolder(traceList.get(position));
     }
