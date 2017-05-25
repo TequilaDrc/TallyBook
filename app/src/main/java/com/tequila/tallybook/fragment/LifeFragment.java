@@ -51,25 +51,6 @@ public class LifeFragment extends BaseFragment {
         return mRootView;
     }
 
-//    private void getData() {
-//
-//        Call<ResultModel> call = getDataService().synchronousData();
-//        call.enqueue(new Callback<ResultModel>() {
-//            @Override
-//            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
-//                ResultModel resultModel = response.body();
-//                if (resultModel.getSucceedFlag().equals("1")) {
-//                    showCenterToase(resultModel.getReturnInfo().toString());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResultModel> call, Throwable t) {
-//                showCenterToase(t.getMessage());
-//            }
-//        });
-//    }
-
     @OnClick({R.id.btnDai, R.id.btnYang, R.id.btnXu, R.id.btnZhou, R.id.btnZhang})
     public void btnNameClick(View view) {
         switch (view.getId()) {
@@ -141,8 +122,7 @@ public class LifeFragment extends BaseFragment {
             return;
         }
 
-
-
+        
     }
 
     @Override
