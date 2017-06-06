@@ -2,7 +2,9 @@ package com.tequila.tallybook.net;
 
 import com.tequila.tallybook.mode.ResultModel;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -29,5 +31,5 @@ public interface DataService {
     Call<ResultModel> synchronousData();
 
     @POST("saveLifeInfo.php")
-    Call<ResultModel> saveLifeInfo(@Field("saveInfo") String saveInfo);
+    Call<ResultModel> saveLifeInfo(@Body RequestBody requestBody);
 }

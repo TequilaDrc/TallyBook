@@ -20,6 +20,8 @@ import com.tequila.tallybook.net.query.saveLifeInfoQuery;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -138,16 +140,20 @@ public class LifeFragment extends BaseFragment {
 
         String saveJson = new Gson().toJson(saveInfo, new TypeToken<saveLifeInfoQuery>(){}.getType());
         if (NetworkManager.nm.isNetworkAvailable(getContext())) {
-            showCenterToase("keyi");
+            saveLifeInfo(saveJson);
         }
     }
 
     private void saveLifeInfo(String saveInfo) {
 
-        Call<ResultModel> call = getDataService().saveLifeInfo(saveInfo);
+        RequestBody requestBody =
+                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), saveInfo);
+
+        Call<ResultModel> call = getDataService().saveLifeInfo(requestBody);
         call.enqueue(new Callback<ResultModel>() {
             @Override
             public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+                ResultModel data = response.body();
 
             }
 
