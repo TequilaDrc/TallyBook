@@ -1,5 +1,8 @@
 package com.tequila.tallybook.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tequila on 2017/5/18.
  */
@@ -62,5 +65,17 @@ public class UserBean {
         if (zhang) count++;
 
         return count;
+    }
+
+    public List<String> getPeopleName() {
+        List<String> peopleName = new ArrayList<>();
+
+        if (dai) peopleName.add("代仁超");
+        if (yang) peopleName.add("杨洪刚");
+        if (xu) peopleName.add("徐秀云");
+        if (zhou) peopleName.add("周秋爽");
+        if (zhang) peopleName.add("张栋昌");
+
+        return peopleName;
     }
 }

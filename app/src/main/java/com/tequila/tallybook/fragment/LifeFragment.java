@@ -3,6 +3,7 @@ package com.tequila.tallybook.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.UserBean;
+import com.tequila.tallybook.net.query.saveLifeInfoQuery;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,7 +37,6 @@ public class LifeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
 
         if(mRootView == null){
             mRootView = inflater.inflate(R.layout.life_fragment, container, false);
@@ -122,7 +123,15 @@ public class LifeFragment extends BaseFragment {
             return;
         }
 
-        
+        saveLifeInfoQuery saveInfo = new saveLifeInfoQuery();
+        saveInfo.setPeopleNumber(bean.getPeopleNumber());
+        saveInfo.setPeopleName(bean.getPeopleName());
+        saveInfo.setMoney(edit_money.getText().toString());
+        saveInfo.setPluInfo(edit_plu.getText().toString());
+        saveInfo.setRemark(edit_remark.getText().toString());
+
+        Log.d("TAG", "doSave: ");
+
     }
 
     @Override

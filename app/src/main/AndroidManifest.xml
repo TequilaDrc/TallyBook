@@ -77,6 +77,7 @@
             android:label="@string/app_English_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:alwaysRetainTaskState="true"
+            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTask"/>
     </application>
 
