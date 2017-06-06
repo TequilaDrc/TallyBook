@@ -3,20 +3,26 @@ package com.tequila.tallybook.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.UserBean;
+import com.tequila.tallybook.mode.ResultModel;
+import com.tequila.tallybook.net.NetworkManager;
 import com.tequila.tallybook.net.query.saveLifeInfoQuery;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/4.
@@ -130,8 +136,26 @@ public class LifeFragment extends BaseFragment {
         saveInfo.setPluInfo(edit_plu.getText().toString());
         saveInfo.setRemark(edit_remark.getText().toString());
 
-        Log.d("TAG", "doSave: ");
+        String saveJson = new Gson().toJson(saveInfo, new TypeToken<saveLifeInfoQuery>(){}.getType());
+        if (NetworkManager.nm.isNetworkAvailable(getContext())) {
+            showCenterToase("keyi");
+        }
+    }
 
+    private void saveLifeInfo(String saveInfo) {
+
+        Call<ResultModel> call = getDataService().saveLifeInfo(saveInfo);
+        call.enqueue(new Callback<ResultModel>() {
+            @Override
+            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResultModel> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

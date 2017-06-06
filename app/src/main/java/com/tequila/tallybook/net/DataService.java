@@ -27,4 +27,7 @@ public interface DataService {
 
     @POST("synchronousdata.php")
     Call<ResultModel> synchronousData();
+
+    @POST("saveLifeInfo.php")
+    Call<ResultModel> saveLifeInfo(@Field("saveInfo") String saveInfo);
 }

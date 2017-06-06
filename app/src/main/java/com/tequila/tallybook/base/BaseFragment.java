@@ -2,6 +2,7 @@ package com.tequila.tallybook.base;
 
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -38,6 +39,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);   // 强制使得主线程可以访问网络
+
         if(!(getActivity() instanceof BackHandledInterface)){
             throw new ClassCastException("Hosting Activity must implement BackHandledInterface");
         }else{

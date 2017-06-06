@@ -18,6 +18,7 @@ import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.UsrUserModel;
+import com.tequila.tallybook.net.NetworkManager;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TextURLView;
@@ -93,7 +94,7 @@ public class LoginActivity extends BaseActivity{
         }
 
         if (!Debug.isDebug()) {
-            if (!isNetworkAvailable()) {
+            if (!NetworkManager.nm.isNetworkAvailable(this)) {
                 showCenterToase("网络异常,请检查网络!");
                 return;
             }
@@ -140,7 +141,7 @@ public class LoginActivity extends BaseActivity{
      */
     @OnClick(R.id.register)
     public void register() {
-        if (isNetworkAvailable()) {
+        if (NetworkManager.nm.isNetworkAvailable(this)) {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             finish();
         } else {
@@ -154,7 +155,7 @@ public class LoginActivity extends BaseActivity{
     @OnClick(R.id.tv_forget_password)
     public void forgetPassword() {
 
-        if (isNetworkAvailable()) {
+        if (NetworkManager.nm.isNetworkAvailable(this)) {
             showToast("忘记密码");
         } else {
             showCenterToase("网络异常,请检查网络!");
