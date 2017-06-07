@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,6 +17,7 @@ import com.tequila.tallybook.bean.UserBean;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.net.NetworkManager;
 import com.tequila.tallybook.net.query.saveLifeInfoQuery;
+import com.tequila.tallybook.utils.Preference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +36,7 @@ public class LifeFragment extends BaseFragment {
 
     private View mRootView;
     private UserBean bean = new UserBean();
+    private String loginName;
 
     @Bind(R.id.edit_money)
     EditText edit_money;
@@ -42,6 +45,17 @@ public class LifeFragment extends BaseFragment {
     @Bind(R.id.edit_remark)
     EditText edit_remark;
 
+    @Bind(R.id.btnDai)
+    ImageButton btnDai;
+    @Bind(R.id.btnYang)
+    ImageButton btnYang;
+    @Bind(R.id.btnXu)
+    ImageButton btnXu;
+    @Bind(R.id.btnZhou)
+    ImageButton btnZhou;
+    @Bind(R.id.btnZhang)
+    ImageButton btnZhang;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +63,8 @@ public class LifeFragment extends BaseFragment {
         if(mRootView == null){
             mRootView = inflater.inflate(R.layout.life_fragment, container, false);
         }
+
+        loginName = Preference.getInstance(getContext()).getLoginName();
 
         ViewGroup mViewGroup = (ViewGroup)mRootView.getParent();
         if(mViewGroup!=null){
@@ -131,16 +147,22 @@ public class LifeFragment extends BaseFragment {
             return;
         }
 
+        showWait();
+
         saveLifeInfoQuery saveInfo = new saveLifeInfoQuery();
+        saveInfo.setsMakerName(loginName);
         saveInfo.setPeopleNumber(bean.getPeopleNumber());
         saveInfo.setPeopleName(bean.getPeopleName());
-        saveInfo.setMoney(edit_money.getText().toString());
+        float money = Float.parseFloat(edit_money.getText().toString());
+        saveInfo.setMoney(money);
         saveInfo.setPluInfo(edit_plu.getText().toString());
         saveInfo.setRemark(edit_remark.getText().toString());
 
         String saveJson = new Gson().toJson(saveInfo, new TypeToken<saveLifeInfoQuery>(){}.getType());
         if (NetworkManager.nm.isNetworkAvailable(getContext())) {
             saveLifeInfo(saveJson);
+        } else {
+            // 保存本地
         }
     }
 
@@ -153,15 +175,38 @@ public class LifeFragment extends BaseFragment {
         call.enqueue(new Callback<ResultModel>() {
             @Override
             public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+                hideWait();
                 ResultModel data = response.body();
-
+                if (data.getSucceedFlag().equals("1")) {
+                    showCenterToase("保存成功");
+                    clear();
+                } else {
+                    // 保存本地
+                }
             }
 
             @Override
             public void onFailure(Call<ResultModel> call, Throwable t) {
-
+                showCenterToase(t.getMessage());
             }
         });
+    }
+
+    private void clear() {
+        bean.setDai(false);
+        bean.setXu(false);
+        bean.setYang(false);
+        bean.setZhang(false);
+        bean.setZhou(false);
+        btnDai.setBackground(getResources().getDrawable(R.drawable.blackdai));
+        btnXu.setBackground(getResources().getDrawable(R.drawable.blackxu));
+        btnYang.setBackground(getResources().getDrawable(R.drawable.blackyang));
+        btnZhang.setBackground(getResources().getDrawable(R.drawable.blackzhang));
+        btnZhou.setBackground(getResources().getDrawable(R.drawable.blackzhou));
+
+        edit_money.setText("");
+        edit_plu.setText("");
+        edit_remark.setText("");
     }
 
     @Override

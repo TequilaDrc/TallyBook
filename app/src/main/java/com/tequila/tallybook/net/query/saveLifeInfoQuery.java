@@ -9,11 +9,20 @@ import java.util.List;
 
 public class saveLifeInfoQuery {
 
+    private String sMakerName = "";
     private int PeopleNumber = 0;
     private List<String> PeopleName = new ArrayList<>();
-    private String Money = "";
+    private float Money = 0;
     private String PluInfo = "";
     private String Remark = "";
+
+    public String getsMakerName() {
+        return sMakerName;
+    }
+
+    public void setsMakerName(String sMakerName) {
+        this.sMakerName = sMakerName;
+    }
 
     public int getPeopleNumber() {
         return PeopleNumber;
@@ -32,11 +41,11 @@ public class saveLifeInfoQuery {
         PeopleName.addAll(peopleName);
     }
 
-    public String getMoney() {
+    public float getMoney() {
         return Money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(float money) {
         Money = money;
     }
 
