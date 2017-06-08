@@ -121,9 +121,9 @@ public class TimeTraceListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         public void bindHolder(TimeTrace trace) {
-            tvAcceptTime.setText(trace.getAcceptTime());
-            tvAcceptStation.setText(trace.getAcceptStation());
-            tvName.setText(trace.getName());
+            tvAcceptTime.setText(trace.getJZDate());
+            tvAcceptStation.setText(trace.getsMakerGoods());
+            tvName.setText(trace.getsMakerName());
         }
     }
 }

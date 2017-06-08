@@ -101,7 +101,7 @@ public class AccountFragment extends BaseFragment {
             adapter.setOnItemClickListener(new TimeTraceListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    showCenterToase(timeTraces.get(position).getAcceptStation());
+                    showCenterToase(timeTraces.get(position).getsBillNo());
                 }
             });
         }

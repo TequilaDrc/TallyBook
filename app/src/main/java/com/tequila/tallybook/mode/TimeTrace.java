@@ -5,40 +5,44 @@ package com.tequila.tallybook.mode;
  */
 
 public class TimeTrace {
+    /** 单据号*/
+    private String sBillNo = "";
     /** 时间 */
-    private String JZDate;
+    private String JZDate = "";
     /** 购买物品 */
-    private String sMakerGoods;
+    private String sMakerGoods = "";
     /** 购买人*/
-    private String sMakerName;
+    private String sMakerName = "";
 
-    public TimeTrace(String acceptTime, String acceptStation, String name) {
-        this.JZDate = acceptTime;
-        this.sMakerGoods = acceptStation;
-        this.sMakerName = name;
+    public String getsBillNo() {
+        return sBillNo;
     }
 
-    public String getAcceptTime() {
+    public void setsBillNo(String sBillNo) {
+        this.sBillNo = sBillNo;
+    }
+
+    public String getJZDate() {
         return JZDate;
     }
 
-    public void setAcceptTime(String acceptTime) {
-        this.JZDate = acceptTime;
+    public void setJZDate(String JZDate) {
+        this.JZDate = JZDate;
     }
 
-    public String getAcceptStation() {
+    public String getsMakerGoods() {
         return sMakerGoods;
     }
 
-    public void setAcceptStation(String acceptStation) {
-        this.sMakerGoods = acceptStation;
+    public void setsMakerGoods(String sMakerGoods) {
+        this.sMakerGoods = sMakerGoods;
     }
 
-    public String getName() {
+    public String getsMakerName() {
         return sMakerName;
     }
 
-    public void setName(String name) {
-        this.sMakerName = name;
+    public void setsMakerName(String sMakerName) {
+        this.sMakerName = sMakerName;
     }
 }
