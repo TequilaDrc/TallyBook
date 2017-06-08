@@ -1,5 +1,6 @@
 package com.tequila.tallybook.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,13 +14,15 @@ import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.UsrUserModel;
+import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.SysApplication;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -37,6 +40,8 @@ public class RegisterActivity extends BaseActivity {
     EditText et_phoneNumber;
     @Bind(R.id.et_passWord)
     EditText et_passWord;
+
+    private String userName, phoneNumber, password;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,42 +87,57 @@ public class RegisterActivity extends BaseActivity {
             }
         }
 
-        registerInfo(et_userName.getText().toString(), et_phoneNumber.getText().toString(), et_passWord.getText().toString());
+        userName = et_userName.getText().toString();
+        phoneNumber = et_phoneNumber.getText().toString();
+        password = et_passWord.getText().toString();
+
+        RegisterAsyncTask task = new RegisterAsyncTask(this, "注册中...");
+        task.execute(userName, phoneNumber, password);
     }
 
-    private void registerInfo(final String userName, final String userPhone, final String userPasswd) {
+    private class RegisterAsyncTask extends CommonAsyncTask<ResultModel> {
 
-        Call<ResultModel> test = getDataService().addUser(userName, userPhone, userPasswd);
-        test.enqueue(new Callback<ResultModel>() {
-            @Override
-            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+        public RegisterAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
 
-                ResultModel rst = response.body();
-                if (rst != null) {
-                    if (rst.getSucceedFlag().equals("1")) {
-                        showCenterToase("注册成功!");
+        @Override
+        public ResultModel convert(Object[] obj) {
+            ResultModel model = new ResultModel();
 
-                        UsrUserModel user = new UsrUserModel();
-                        user.setsUserName(userName);
-                        user.setsUserPhone(userPhone);
-                        user.setsPasswd(userPasswd);
-
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("user", user);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    } else {
-                        showCenterToase("注册失败!" + rst.getErrorInfo());
-                    }
-                }
+            try {
+                Call<ResultModel> call = getDataService().addUser(obj[0].toString(), obj[1].toString(), obj[2].toString());
+                Response<ResultModel> response = call.execute();
+                model = response.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.setSucceedFlag("0");
+                model.setErrorInfo(e.getMessage());
             }
 
-            @Override
-            public void onFailure(Call<ResultModel> call, Throwable t) {
-                showCenterToase("注册失败!" + t.getMessage());
+            return model;
+        }
+
+        @Override
+        public void setTData(ResultModel model) {
+            if (model.getSucceedFlag().equals("1")) {
+                showCenterToase("注册成功!");
+
+                UsrUserModel userModel = new UsrUserModel();
+                userModel.setsUserName(userName);
+                userModel.setsUserPhone(phoneNumber);
+                userModel.setsPasswd(password);
+
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", userModel);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+            } else {
+                showCenterToase("注册失败!" + model.getErrorInfo());
             }
-        });
+        }
     }
 
     /**

@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity{
 
         if (user != null) {
             account.setText(user.getsUserName());
-            account.setText(user.getsPasswd());
+            password.setText(user.getsPasswd());
         }
     }
 
