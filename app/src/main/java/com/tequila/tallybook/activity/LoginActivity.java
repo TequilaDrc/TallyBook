@@ -1,5 +1,6 @@
 package com.tequila.tallybook.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,15 +20,17 @@ import com.tequila.tallybook.base.BaseActivity;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.UsrUserModel;
 import com.tequila.tallybook.net.NetworkManager;
+import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
 import com.tequila.tallybook.view.TextURLView;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -99,41 +102,51 @@ public class LoginActivity extends BaseActivity{
                 return;
             }
 
-            loginvalidation(accountStr, passwordStr);
+            LoginasyncTask task = new LoginasyncTask(this, "登陆中...");
+            task.execute(accountStr, passwordStr);
         } else {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
     }
 
-    private void loginvalidation (String loginName, String loginPasswd) {
+    private class LoginasyncTask extends CommonAsyncTask<UsrUserModel> {
 
-        showWait();
-        Call<ResultModel> call = getDataService().loginvalidation(loginName, loginPasswd);
-        call.enqueue(new Callback<ResultModel>() {
-            @Override
-            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
-                ResultModel data = response.body();
-                if (data.getSucceedFlag().equals("1")) {
+        public LoginasyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
 
-                    UsrUserModel user = new Gson().fromJson(data.getReturnInfo().toString(), UsrUserModel.class);
+        @Override
+        public UsrUserModel convert(Object[] obj) {
 
-                    Preference.getInstance(LoginActivity.this).setLoginName(user.getsUserName());
-                    Preference.getInstance(LoginActivity.this).setPassword(user.getsPasswd());
-                    Preference.getInstance(LoginActivity.this).setLoginPhone(user.getsUserPhone());
-
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-
-                    hideWait();
+            UsrUserModel user = new UsrUserModel();
+            Call<ResultModel> call = getDataService().loginvalidation(obj[0].toString(), obj[1].toString());
+            try {
+                Response<ResultModel> response = call.execute();
+                ResultModel model = response.body();
+                if (model.getSucceedFlag().equals("1")) {
+                    user = new Gson().fromJson(model.getReturnInfo().toString(), UsrUserModel.class);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+                user = null;
             }
 
-            @Override
-            public void onFailure(Call<ResultModel> call, Throwable t) {
-                hideWait();
+            return user;
+        }
+
+        @Override
+        public void setTData(UsrUserModel usrUserModel) {
+
+            if (usrUserModel != null) {
+                Preference.getInstance(LoginActivity.this).setLoginName(usrUserModel.getsUserName());
+                Preference.getInstance(LoginActivity.this).setPassword(usrUserModel.getsPasswd());
+                Preference.getInstance(LoginActivity.this).setLoginPhone(usrUserModel.getsUserPhone());
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
-        });
+        }
     }
 
     /**

@@ -11,15 +11,15 @@ public class ResultModel {
 
     @SerializedName("errorInfo")
     @Expose
-    private String errorInfo;
+    private String errorInfo = "";
 
     @SerializedName("returnInfo")
     @Expose
-    private Object returnInfo;
+    private Object returnInfo = "";
 
     @SerializedName("succeedFlag")
     @Expose
-    private String succeedFlag;
+    private String succeedFlag = "";
 
     /**
      *

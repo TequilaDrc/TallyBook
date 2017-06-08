@@ -1,5 +1,6 @@
 package com.tequila.tallybook.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -17,7 +18,10 @@ import com.tequila.tallybook.bean.UserBean;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.net.NetworkManager;
 import com.tequila.tallybook.net.query.saveLifeInfoQuery;
+import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.Preference;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +29,6 @@ import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -147,8 +150,6 @@ public class LifeFragment extends BaseFragment {
             return;
         }
 
-        showWait();
-
         saveLifeInfoQuery saveInfo = new saveLifeInfoQuery();
         saveInfo.setsMakerName(loginName);
         saveInfo.setPeopleNumber(bean.getPeopleNumber());
@@ -160,36 +161,51 @@ public class LifeFragment extends BaseFragment {
 
         String saveJson = new Gson().toJson(saveInfo, new TypeToken<saveLifeInfoQuery>(){}.getType());
         if (NetworkManager.nm.isNetworkAvailable(getContext())) {
-            saveLifeInfo(saveJson);
-        } else {
-            // 保存本地
+
+            saveLifeInfoAsyncTask task = new saveLifeInfoAsyncTask(getContext(), "保存中...");
+            task.execute(saveJson);
         }
     }
 
-    private void saveLifeInfo(String saveInfo) {
+    private class saveLifeInfoAsyncTask extends CommonAsyncTask<ResultModel> {
 
-        RequestBody requestBody =
-                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), saveInfo);
+        public saveLifeInfoAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
 
-        Call<ResultModel> call = getDataService().saveLifeInfo(requestBody);
-        call.enqueue(new Callback<ResultModel>() {
-            @Override
-            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
-                hideWait();
-                ResultModel data = response.body();
-                if (data.getSucceedFlag().equals("1")) {
-                    showCenterToase("保存成功");
-                    clear();
-                } else {
-                    // 保存本地
-                }
+        @Override
+        public ResultModel convert(Object[] obj) {
+
+            ResultModel model = new ResultModel();
+
+            try {
+
+                RequestBody requestBody =
+                    RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj[0].toString());
+
+                Call<ResultModel> call = getDataService().saveLifeInfo(requestBody);
+                Response<ResultModel> response = call.execute();
+                model = response.body();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.setErrorInfo(e.getMessage());
+                model.setSucceedFlag("0");
             }
 
-            @Override
-            public void onFailure(Call<ResultModel> call, Throwable t) {
-                showCenterToase(t.getMessage());
+            return model;
+        }
+
+        @Override
+        public void setTData(ResultModel model) {
+
+            if (model.getSucceedFlag().equals("1")) {
+                showCenterToase("保存成功!");
+                clear();
+            } else {
+                showCenterToase(model.getErrorInfo());
             }
-        });
+        }
     }
 
     private void clear() {
