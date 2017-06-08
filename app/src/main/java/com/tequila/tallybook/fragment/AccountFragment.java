@@ -1,5 +1,6 @@
 package com.tequila.tallybook.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,16 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
+import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.TimeTrace;
+import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.adapter.TimeTraceListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/4.
@@ -29,7 +37,6 @@ public class AccountFragment extends BaseFragment {
     RecyclerView timeLine;
 
     private View mRootView;
-    private List<TimeTrace> timeTraceList = new ArrayList<TimeTrace>(10);
     private TimeTraceListAdapter adapter;
 
     @Nullable
@@ -46,49 +53,58 @@ public class AccountFragment extends BaseFragment {
         }
 
         ButterKnife.bind(this, mRootView);
-        initData();
+        getData();
 
         return mRootView;
     }
 
-    private void initData() {
-        // 模拟一些假的数据
-        timeTraceList.add(new TimeTrace("2016-05-25 17:48:00", "[沈阳市] [沈阳和平五部]的派件已签收 感谢使用中通快递,期待再次为您服务!", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 14:13:00", "[沈阳市] [沈阳和平五部]的东北大学代理点正在派件 电话:18040xxxxxx 请保持电话畅通、耐心等待", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 13:01:04", "[沈阳市] 快件到达 [沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 12:19:47", "[沈阳市] 快件离开 [沈阳中转]已发往[沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 11:12:44", "[沈阳市] 快件到达 [沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-24 03:12:12", "[嘉兴市] 快件离开 [杭州中转部]已发往[沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 21:06:46", "[杭州市] 快件到达 [杭州汽运部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:59:41", "[杭州市] 快件离开 [杭州乔司区]已发往[沈阳]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:35:32", "[杭州市] [杭州乔司区]的市场部已收件 电话:18358xxxxxx", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 17:48:00", "[沈阳市] [沈阳和平五部]的派件已签收 感谢使用中通快递,期待再次为您服务!", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 14:13:00", "[沈阳市] [沈阳和平五部]的东北大学代理点正在派件 电话:18040xxxxxx 请保持电话畅通、耐心等待", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 13:01:04", "[沈阳市] 快件到达 [沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 12:19:47", "[沈阳市] 快件离开 [沈阳中转]已发往[沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 11:12:44", "[沈阳市] 快件到达 [沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-24 03:12:12", "[嘉兴市] 快件离开 [杭州中转部]已发往[沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 21:06:46", "[杭州市] 快件到达 [杭州汽运部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:59:41", "[杭州市] 快件离开 [杭州乔司区]已发往[沈阳]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:35:32", "[杭州市] [杭州乔司区]的市场部已收件 电话:18358xxxxxx", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 17:48:00", "[沈阳市] [沈阳和平五部]的派件已签收 感谢使用中通快递,期待再次为您服务!", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 14:13:00", "[沈阳市] [沈阳和平五部]的东北大学代理点正在派件 电话:18040xxxxxx 请保持电话畅通、耐心等待", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 13:01:04", "[沈阳市] 快件到达 [沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 12:19:47", "[沈阳市] 快件离开 [沈阳中转]已发往[沈阳和平五部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-25 11:12:44", "[沈阳市] 快件到达 [沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-24 03:12:12", "[嘉兴市] 快件离开 [杭州中转部]已发往[沈阳中转]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 21:06:46", "[杭州市] 快件到达 [杭州汽运部]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:59:41", "[杭州市] 快件离开 [杭州乔司区]已发往[沈阳]", "至尊宝"));
-        timeTraceList.add(new TimeTrace("2016-05-23 18:35:32", "[杭州市] [杭州乔司区]的市场部已收件 电话:18358xxxxxx", "至尊宝"));
-        adapter = new TimeTraceListAdapter(getContext(), timeTraceList);
-        timeLine.setLayoutManager(new LinearLayoutManager(getContext()));
-        timeLine.setAdapter(adapter);
-        adapter.setOnItemClickListener(new TimeTraceListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                showCenterToase(timeTraceList.get(position).getAcceptStation());
+    private void getData() {
+
+        AccountAsyncTask task = new AccountAsyncTask(getContext(), "获取数据中...");
+        task.execute("");
+
+    }
+
+    private class AccountAsyncTask extends CommonAsyncTask<List<TimeTrace>> {
+        public AccountAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
+
+        @Override
+        public List<TimeTrace> convert(Object[] obj) {
+
+            List<TimeTrace> list = new ArrayList<>();
+            list.clear();
+
+            try {
+                Call<ResultModel> call = getDataService().getLifeData();
+                Response<ResultModel> response = call.execute();
+                ResultModel model = response.body();
+                if (model.getSucceedFlag().equals("1")) {
+
+                    String lstData = model.getReturnInfo().toString();
+                    list = new Gson().fromJson(lstData, new TypeToken<List<TimeTrace>>(){}.getType());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+
+            return list;
+        }
+
+        @Override
+        public void setTData(final List<TimeTrace> timeTraces) {
+
+            adapter = new TimeTraceListAdapter(getContext(), timeTraces);
+            timeLine.setLayoutManager(new LinearLayoutManager(getContext()));
+            timeLine.setAdapter(adapter);
+            adapter.setOnItemClickListener(new TimeTraceListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    showCenterToase(timeTraces.get(position).getAcceptStation());
+                }
+            });
+        }
     }
 
     @Override

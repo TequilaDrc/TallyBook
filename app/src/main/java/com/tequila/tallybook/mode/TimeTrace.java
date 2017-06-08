@@ -6,38 +6,39 @@ package com.tequila.tallybook.mode;
 
 public class TimeTrace {
     /** 时间 */
-    private String acceptTime;
-    /** 描述 */
-    private String acceptStation;
-    private String name;
+    private String JZDate;
+    /** 购买物品 */
+    private String sMakerGoods;
+    /** 购买人*/
+    private String sMakerName;
 
     public TimeTrace(String acceptTime, String acceptStation, String name) {
-        this.acceptTime = acceptTime;
-        this.acceptStation = acceptStation;
-        this.name = name;
+        this.JZDate = acceptTime;
+        this.sMakerGoods = acceptStation;
+        this.sMakerName = name;
     }
 
     public String getAcceptTime() {
-        return acceptTime;
+        return JZDate;
     }
 
     public void setAcceptTime(String acceptTime) {
-        this.acceptTime = acceptTime;
+        this.JZDate = acceptTime;
     }
 
     public String getAcceptStation() {
-        return acceptStation;
+        return sMakerGoods;
     }
 
     public void setAcceptStation(String acceptStation) {
-        this.acceptStation = acceptStation;
+        this.sMakerGoods = acceptStation;
     }
 
     public String getName() {
-        return name;
+        return sMakerName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.sMakerName = name;
     }
 }

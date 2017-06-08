@@ -32,4 +32,7 @@ public interface DataService {
 
     @POST("saveLifeInfo.php")
     Call<ResultModel> saveLifeInfo(@Body RequestBody requestBody);
+
+    @POST("getLifeData.php")
+    Call<ResultModel> getLifeData();
 }
