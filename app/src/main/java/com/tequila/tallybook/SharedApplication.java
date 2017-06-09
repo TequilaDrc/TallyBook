@@ -34,7 +34,7 @@ public class SharedApplication extends Application {
 
         MultiDex.install(this);
 
-        configCollectCrashInfo();
+//        configCollectCrashInfo();
     }
 
     /**

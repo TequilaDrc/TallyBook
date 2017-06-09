@@ -35,4 +35,10 @@ public interface DataService {
 
     @POST("getLifeData.php")
     Call<ResultModel> getLifeData();
+
+    @POST("getTallyViewHeadData.php")
+    Call<ResultModel> getTallyViewHeadData();
+
+    @POST("getTallyViewBodyData.php")
+    Call<ResultModel> getTallyViewBodyData();
 }

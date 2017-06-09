@@ -1,5 +1,6 @@
 package com.tequila.tallybook.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nineoldandroids.view.ViewHelper;
@@ -21,6 +25,10 @@ import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.ItemBean;
 import com.tequila.tallybook.dialog.ExitDialog;
 import com.tequila.tallybook.event.ExitEvent;
+import com.tequila.tallybook.mode.ResultModel;
+import com.tequila.tallybook.mode.TallyViewBodyModel;
+import com.tequila.tallybook.mode.TallyViewHeadModel;
+import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.ItemDataUtils;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
@@ -29,10 +37,28 @@ import com.tequila.tallybook.widget.DragLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import lecho.lib.hellocharts.listener.ComboLineColumnChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.ComboLineColumnChartData;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.ComboLineColumnChartView;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/5/4.
@@ -45,6 +71,19 @@ public class HomeFragment extends BaseFragment {
 //            R.drawable.a, R.drawable.b, R.drawable.c,
 //            R.drawable.d, R.drawable.e, R.drawable.f
 //    };
+
+    private ComboLineColumnChartData data;
+    private int numberOfPoints = 5;
+    float[] randomNumbersTab = new float[numberOfPoints];
+    private boolean hasAxes = true;
+    private boolean hasAxesNames = false;
+    private boolean hasPoints = true;
+    private boolean hasLines = true;
+    private boolean isCubic = false;
+    private boolean hasLabels = false;
+    private String[] Name = new String[] {"代仁超", "杨洪刚", "徐秀云", "周秋爽", "张栋昌"};
+    private List<TallyViewHeadModel> tallyViewHeadModelList;
+    private List<TallyViewBodyModel> tallyViewBodyModelList;
 
     private View mRootView;//缓存fragment View
     private QuickAdapter<ItemBean> quickAdapter;
@@ -61,6 +100,9 @@ public class HomeFragment extends BaseFragment {
     ImageView ivBottom;
     @Bind(R.id.name)
     TextView name;
+
+    @Bind(R.id.chart)
+    ComboLineColumnChartView chart;
 
     @Nullable
     @Override
@@ -82,6 +124,9 @@ public class HomeFragment extends BaseFragment {
         initView();
 //        initViewGroup();
 
+        generateValues();
+        generateData();
+
         EventBus.getDefault().register(this);
 
         return mRootView;
@@ -93,6 +138,150 @@ public class HomeFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    // 获取柱状图数据
+    private void generateValues() {
+
+        getTallyDataAsyncTask task = new getTallyDataAsyncTask(getContext(), "");
+        task.execute("");
+    }
+
+    // 生成数据
+    private void generateData() {
+
+        data = new ComboLineColumnChartData(generateColumnData(), generateLineData());
+
+        List<AxisValue> mAxisXValuesList = new ArrayList<>();
+
+        for (int i = 0; i < numberOfPoints; i++) {
+            mAxisXValuesList.add(new AxisValue(i).setLabel(Name[i]));
+        }
+
+        if (hasAxes) {
+            Axis axisX = new Axis();
+            axisX.setMaxLabelChars(numberOfPoints);
+            axisX.setValues(mAxisXValuesList);
+            axisX.setTextColor(R.color.black);
+            axisX.setTextSize(10);
+
+            Axis axisY = new Axis().setHasLines(true);
+            if (hasAxesNames) {
+                axisX.setName("姓 名");
+                axisY.setName("消 费");
+            }
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+        } else {
+            data.setAxisXBottom(null);
+            data.setAxisYLeft(null);
+        }
+
+        chart.setComboLineColumnChartData(data);
+    }
+
+    private LineChartData generateLineData() {
+
+        List<Line> lines = new ArrayList<Line>();
+
+        List<PointValue> values = new ArrayList<PointValue>();
+        for (int j = 0; j < numberOfPoints; ++j) {
+            values.add(new PointValue(j, randomNumbersTab[j]));
+        }
+
+        Line line = new Line(values);
+        line.setColor(ChartUtils.COLORS[0]);
+        line.setCubic(isCubic);
+        line.setHasLabels(hasLabels);
+        line.setHasLines(hasLines);
+        line.setHasPoints(hasPoints);
+        lines.add(line);
+
+        LineChartData lineChartData = new LineChartData(lines);
+
+        return lineChartData;
+
+    }
+
+    private ColumnChartData generateColumnData() {
+        List<Column> columns = new ArrayList<Column>();
+        List<SubcolumnValue> values;
+        for (int i = 0; i < numberOfPoints; ++i) {
+
+            values = new ArrayList<SubcolumnValue>();
+            values.add(new SubcolumnValue(120, ChartUtils.COLOR_GREEN));
+
+            columns.add(new Column(values));
+        }
+
+        ColumnChartData columnChartData = new ColumnChartData(columns);
+        return columnChartData;
+    }
+
+    private class ValueTouchListener implements ComboLineColumnChartOnValueSelectListener {
+
+        @Override
+        public void onValueDeselected() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onColumnValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
+            Toast.makeText(getActivity(), "Selected column: " + value, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPointValueSelected(int lineIndex, int pointIndex, PointValue value) {
+            Toast.makeText(getActivity(), "Selected line point: " + value, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class getTallyDataAsyncTask extends CommonAsyncTask<String> {
+
+        public getTallyDataAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
+
+        @Override
+        public String convert(Object[] obj) {
+            try {
+                Call<ResultModel> call = getDataService().getTallyViewHeadData();
+                Response<ResultModel> response = call.execute();
+                ResultModel model = response.body();
+                if (model.getSucceedFlag().equals("1")) {
+                    tallyViewHeadModelList = new Gson().fromJson(model.getReturnInfo().toString(), new TypeToken<List<TallyViewHeadModel>>(){}.getType());
+                }
+
+                Call<ResultModel> call1 = getDataService().getTallyViewBodyData();
+                Response<ResultModel> response1 = call1.execute();
+                ResultModel model1 = response1.body();
+                if (model1.getSucceedFlag().equals("1")) {
+                    tallyViewBodyModelList = new Gson().fromJson(model1.getReturnInfo().toString(), new TypeToken<List<TallyViewBodyModel>>(){}.getType());
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        public void setTData(String s) {
+
+            for (int i = 0; i < numberOfPoints; ++i) {
+
+                for (int j = 0; j < tallyViewHeadModelList.size(); j++) {
+                    if (tallyViewHeadModelList.get(j).getMarkerName().equals("代仁超")) {
+                        randomNumbersTab[i] = tallyViewHeadModelList.get(j).getSumPrice();
+                    } else if (tallyViewHeadModelList.get(j).getMarkerName().equals("杨洪刚")){
+                        randomNumbersTab[i] = tallyViewHeadModelList.get(j).getSumPrice();
+                    }
+                    // TODO: 2017/6/9  
+                }
+            }
+
+            // TODO: 2017/6/9  
+        }
+    }
+
     private void initDragLayout() {
 
         dl.setDragListener(new DragLayout.DragListener() {
@@ -100,13 +289,13 @@ public class HomeFragment extends BaseFragment {
             //界面打开的时候
             @Override
             public void onOpen() {
-//                Toast.makeText(getContext(), "打开",Toast.LENGTH_SHORT).show();
+//                showCenterToase("打开");
             }
 
             //界面关闭的时候
             @Override
             public void onClose() {
-//                Toast.makeText(getContext(), "关闭",Toast.LENGTH_SHORT).show();
+//                showCenterToase("关闭");
             }
 
             //界面滑动的时候
@@ -136,6 +325,8 @@ public class HomeFragment extends BaseFragment {
                         .setText(R.id.item_tv, item.getTitle());
             }
         });
+
+        chart.setOnValueTouchListener(new ValueTouchListener());
     }
 
     @OnItemClick(R.id.lv)

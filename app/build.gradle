@@ -52,6 +52,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.quicklib:quicklib-multidex:1.0.1'
 
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     //    compile files('libs/fastjson-1.2.12.jar')
     //    compile (name:'zbarutils', ext:'aar')

@@ -41,6 +41,13 @@
 
                 <!--</com.tequila.tallybook.view.ImageBarnnerFramLayout>-->
 
+                <lecho.lib.hellocharts.view.ComboLineColumnChartView
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                </lecho.lib.hellocharts.view.ComboLineColumnChartView>
+
             </FrameLayout>
         </LinearLayout>
     </com.tequila.tallybook.widget.CustomRelativeLayout>
