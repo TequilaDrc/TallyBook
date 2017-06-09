@@ -2,6 +2,7 @@ package com.tequila.tallybook;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.tequila.tallybook.datasource.CustomDBHelper;
 import com.tequila.tallybook.utils.CrashExceptionHandler;
@@ -31,7 +32,9 @@ public class SharedApplication extends Application {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));		// 设置默认时区的，设置的是上海的时区。
         Locale.setDefault(Locale.CHINA);
 
-//        configCollectCrashInfo();
+        MultiDex.install(this);
+
+        configCollectCrashInfo();
     }
 
     /**
