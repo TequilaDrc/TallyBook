@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -73,15 +72,12 @@ public class HomeFragment extends BaseFragment {
 //    };
 
     private ComboLineColumnChartData data;
-    private int numberOfPoints = 5;
-    float[] randomNumbersTab = new float[numberOfPoints];
     private boolean hasAxes = true;
     private boolean hasAxesNames = false;
     private boolean hasPoints = true;
     private boolean hasLines = true;
     private boolean isCubic = false;
     private boolean hasLabels = false;
-    private String[] Name = new String[] {"代仁超", "杨洪刚", "徐秀云", "周秋爽", "张栋昌"};
     private List<TallyViewHeadModel> tallyViewHeadModelList;
     private List<TallyViewBodyModel> tallyViewBodyModelList;
 
@@ -125,7 +121,6 @@ public class HomeFragment extends BaseFragment {
 //        initViewGroup();
 
         generateValues();
-        generateData();
 
         EventBus.getDefault().register(this);
 
@@ -152,13 +147,13 @@ public class HomeFragment extends BaseFragment {
 
         List<AxisValue> mAxisXValuesList = new ArrayList<>();
 
-        for (int i = 0; i < numberOfPoints; i++) {
-            mAxisXValuesList.add(new AxisValue(i).setLabel(Name[i]));
+        for (int i = 0; i < tallyViewHeadModelList.size(); i++) {
+            mAxisXValuesList.add(new AxisValue(i).setLabel(tallyViewHeadModelList.get(i).getMarkerName()));
         }
 
         if (hasAxes) {
             Axis axisX = new Axis();
-            axisX.setMaxLabelChars(numberOfPoints);
+            axisX.setMaxLabelChars(tallyViewHeadModelList.size());
             axisX.setValues(mAxisXValuesList);
             axisX.setTextColor(R.color.black);
             axisX.setTextSize(10);
@@ -183,8 +178,8 @@ public class HomeFragment extends BaseFragment {
         List<Line> lines = new ArrayList<Line>();
 
         List<PointValue> values = new ArrayList<PointValue>();
-        for (int j = 0; j < numberOfPoints; ++j) {
-            values.add(new PointValue(j, randomNumbersTab[j]));
+        for (int j = 0; j < tallyViewHeadModelList.size(); ++j) {
+            values.add(new PointValue(j, tallyViewHeadModelList.get(j).getSumPrice()));
         }
 
         Line line = new Line(values);
@@ -204,10 +199,10 @@ public class HomeFragment extends BaseFragment {
     private ColumnChartData generateColumnData() {
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
-        for (int i = 0; i < numberOfPoints; ++i) {
+        for (int i = 0; i < tallyViewHeadModelList.size(); ++i) {
 
             values = new ArrayList<SubcolumnValue>();
-            values.add(new SubcolumnValue(120, ChartUtils.COLOR_GREEN));
+            values.add(new SubcolumnValue(tallyViewBodyModelList.get(i).getSumPrice(), ChartUtils.COLOR_GREEN));
 
             columns.add(new Column(values));
         }
@@ -225,12 +220,14 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onColumnValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            Toast.makeText(getActivity(), "Selected column: " + value, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Selected column: " + value, Toast.LENGTH_SHORT).show();
+            showCenterToase("累计生活平分费用为: " + value.getValue());
         }
 
         @Override
         public void onPointValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(getActivity(), "Selected line point: " + value, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Selected line point: " + value, Toast.LENGTH_SHORT).show();
+            showCenterToase("累计生活费用为: " + value.getY());
         }
     }
 
@@ -266,19 +263,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void setTData(String s) {
 
-            for (int i = 0; i < numberOfPoints; ++i) {
-
-                for (int j = 0; j < tallyViewHeadModelList.size(); j++) {
-                    if (tallyViewHeadModelList.get(j).getMarkerName().equals("代仁超")) {
-                        randomNumbersTab[i] = tallyViewHeadModelList.get(j).getSumPrice();
-                    } else if (tallyViewHeadModelList.get(j).getMarkerName().equals("杨洪刚")){
-                        randomNumbersTab[i] = tallyViewHeadModelList.get(j).getSumPrice();
-                    }
-                    // TODO: 2017/6/9  
-                }
-            }
-
-            // TODO: 2017/6/9  
+            generateData();
         }
     }
 
