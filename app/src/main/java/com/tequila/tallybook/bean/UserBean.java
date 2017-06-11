@@ -72,7 +72,7 @@ public class UserBean {
 
         if (dai) peopleName.add("代仁超");
         if (yang) peopleName.add("杨洪刚");
-        if (xu) peopleName.add("徐秀云");
+        if (xu) peopleName.add("许秀云");
         if (zhou) peopleName.add("周秋爽");
         if (zhang) peopleName.add("张栋昌");
 
