@@ -114,6 +114,9 @@ public class TimeTraceListAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tvDot;
         @Bind(R.id.tvName)
         TextView tvName;
+        @Bind(R.id.tvMoney)
+        TextView tvMoney;
+
 
         public ViewHolder(View view) {
             super(view);
@@ -124,6 +127,7 @@ public class TimeTraceListAdapter extends RecyclerView.Adapter<RecyclerView.View
             tvAcceptTime.setText(trace.getJZDate());
             tvAcceptStation.setText(trace.getsMakerGoods());
             tvName.setText(trace.getsMakerName());
+            tvMoney.setText(trace.getsMakerPrice() + "元");
         }
     }
 }

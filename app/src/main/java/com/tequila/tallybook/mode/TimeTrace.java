@@ -13,6 +13,8 @@ public class TimeTrace {
     private String sMakerGoods = "";
     /** 购买人*/
     private String sMakerName = "";
+    /**金额*/
+    private String sMakerPrice = "";
 
     public String getsBillNo() {
         return sBillNo;
@@ -44,5 +46,13 @@ public class TimeTrace {
 
     public void setsMakerName(String sMakerName) {
         this.sMakerName = sMakerName;
+    }
+
+    public String getsMakerPrice() {
+        return sMakerPrice;
+    }
+
+    public void setsMakerPrice(String sMakerPrice) {
+        this.sMakerPrice = sMakerPrice;
     }
 }

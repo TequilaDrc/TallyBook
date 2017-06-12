@@ -150,6 +150,10 @@ public class LifeFragment extends BaseFragment {
             return;
         }
 
+        if (TextUtils.isEmpty(loginName)) {
+            loginName = Preference.getInstance(getContext()).getLoginName();
+        }
+
         saveLifeInfoQuery saveInfo = new saveLifeInfoQuery();
         saveInfo.setsMakerName(loginName);
         saveInfo.setPeopleNumber(bean.getPeopleNumber());
