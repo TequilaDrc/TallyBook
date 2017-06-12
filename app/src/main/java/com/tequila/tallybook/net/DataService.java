@@ -16,6 +16,9 @@ import retrofit2.http.POST;
 
 public interface DataService {
 
+    @POST("getNewApkClientInfo.php")
+    Call<ResultModel> getNewApkClientInfo();
+
     @GET("networkverify.php")
     Call<ResultModel> networkVerify();
 

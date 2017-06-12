@@ -31,6 +31,7 @@ import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.ItemDataUtils;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.SysApplication;
+import com.tequila.tallybook.utils.UpgradeUtils;
 import com.tequila.tallybook.widget.DragLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -123,6 +124,8 @@ public class HomeFragment extends BaseFragment {
         generateValues();
 
         EventBus.getDefault().register(this);
+
+        UpgradeUtils.checkVersion(getContext(), 2);
 
         return mRootView;
     }
