@@ -24,6 +24,7 @@ import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.ItemBean;
 import com.tequila.tallybook.dialog.ExitDialog;
 import com.tequila.tallybook.event.ExitEvent;
+import com.tequila.tallybook.mode.CalculateData;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.TallyViewBodyModel;
 import com.tequila.tallybook.mode.TallyViewHeadModel;
@@ -81,6 +82,7 @@ public class HomeFragment extends BaseFragment {
     private boolean hasLabels = false;
     private List<TallyViewHeadModel> tallyViewHeadModelList;
     private List<TallyViewBodyModel> tallyViewBodyModelList;
+    private CalculateData calculateData = new CalculateData();
 
     private View mRootView;//缓存fragment View
     private QuickAdapter<ItemBean> quickAdapter;
@@ -100,6 +102,8 @@ public class HomeFragment extends BaseFragment {
 
     @Bind(R.id.chart)
     ComboLineColumnChartView chart;
+    @Bind(R.id.tvCalculate)
+    TextView tvCalculate;
 
     @Nullable
     @Override
@@ -266,7 +270,11 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void setTData(String s) {
 
+
+            calculateData.setData(tallyViewHeadModelList);
             generateData();
+
+            tvCalculate.setText(calculateData.showData());
         }
     }
 

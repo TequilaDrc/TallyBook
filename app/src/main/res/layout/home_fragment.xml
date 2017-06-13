@@ -31,8 +31,8 @@
 
             <!--中间内容后面放入Fragment-->
             <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <!--<com.tequila.tallybook.view.ImageBarnnerFramLayout-->
                     <!--android:id="@+id/image_group"-->
@@ -41,13 +41,84 @@
 
                 <!--</com.tequila.tallybook.view.ImageBarnnerFramLayout>-->
 
-                <lecho.lib.hellocharts.view.ComboLineColumnChartView
-                    android:id="@+id/chart"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-                </lecho.lib.hellocharts.view.ComboLineColumnChartView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="总 消 费 金 额: "/>
+                            
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="3dp"
+                                android:background="#33B5E5"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="每人平分金额: "/>
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="10dp"
+                                android:background="#99CC00"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <lecho.lib.hellocharts.view.ComboLineColumnChartView
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="16dp">
+                    </lecho.lib.hellocharts.view.ComboLineColumnChartView>
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        android:fadingEdge="none">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp">
+
+                            <TextView
+                                android:id="@+id/tvCalculate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text=""/>
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </com.tequila.tallybook.widget.CustomRelativeLayout>
