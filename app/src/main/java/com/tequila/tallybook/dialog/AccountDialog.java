@@ -52,8 +52,8 @@ public class AccountDialog extends BaseDialog {
         @Override
         public void convert(ViewHolder holder, AccountDetailsModel accountDetailsModel) {
 
-            holder.setText(R.id.tvUserName, accountDetailsModel.getsUserName())
-                    .setText(R.id.tvPrice, accountDetailsModel.getfPrice());
+            holder.setText(R.id.tvUserName, "名        称 : " + accountDetailsModel.getsUserName())
+                    .setText(R.id.tvPrice, "平均消费 : " + accountDetailsModel.getfPrice() + " 元");
         }
     }
 

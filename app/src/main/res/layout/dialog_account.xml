@@ -9,12 +9,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="具体消费"/>
+        android:text="具体消费"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
     <ListView
         android:id="@+id/lv_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:divider="@color/black1"
+        android:dividerHeight="1dp">
     </ListView>
 
     <Button
@@ -23,6 +29,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/main_color"
+        android:layout_marginTop="8dp"
         android:text="取消"
         android:textSize="18sp"
         android:textColor="@color/white"/>
