@@ -1,5 +1,6 @@
 package com.tequila.tallybook.mode;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +35,7 @@ public class CalculateData {
     }
 
     public String showData () {
-
-        String str = "";
-
-        str = "总金额为 : " + SumData() + "\n" + "平均每个人消费金额 : " + AverageData() + "\n" + Calculate();
-
-        return str;
+        return "总金额为 : " + SumData() + "元\n" + "平均每个人消费金额 : " + AverageData() + "元\n\n" + Calculate();
     }
 
     private String Calculate () {
@@ -58,7 +54,10 @@ public class CalculateData {
             if (tmpData.get(i).getSumPrice() > 0) {
                 for (int j = 0; j < tmpData.size(); j++) {
                     if (tmpData.get(j).getSumPrice() < 0) {
-                        float v = tmpData.get(i).getSumPrice() + tmpData.get(j).getSumPrice();
+                        BigDecimal bigDecimal1 = new BigDecimal(Float.toString(tmpData.get(i).getSumPrice()));
+                        BigDecimal bigDecimal2 = new BigDecimal(Float.toString(tmpData.get(j).getSumPrice()));
+                        float v = bigDecimal1.add(bigDecimal2).floatValue();
+
                         if (v < 0) {
                             buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(j).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
                             tmpData.get(i).setSumPrice(0);
@@ -70,27 +69,34 @@ public class CalculateData {
                             tmpData.get(j).setSumPrice(0);
                             break;
                         } else if (v > 0) {
-                            buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(j).getMarkerName() + " : " + tmpData.get(j).getSumPrice() + "元\n");
+
+                            buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(j).getMarkerName() + " : " + Math.abs(tmpData.get(j).getSumPrice()) + "元\n");
                             tmpData.get(i).setSumPrice(v);
                             tmpData.get(j).setSumPrice(0);
 
                             for (int k = 0; k < tmpData.size(); k++) {
-                                float va = tmpData.get(i).getSumPrice() + tmpData.get(k).getSumPrice();
-                                if (va < 0) {
-                                    buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
-                                    tmpData.get(i).setSumPrice(0);
-                                    tmpData.get(k).setSumPrice(va);
-                                    break;
-                                } else if (va == 0) {
-                                    buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
-                                    tmpData.get(i).setSumPrice(0);
-                                    tmpData.get(j).setSumPrice(0);
-                                    break;
-                                } else if (va > 0) {
-                                    buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(j).getSumPrice() + "元\n");
-                                    tmpData.get(i).setSumPrice(va);
-                                    tmpData.get(j).setSumPrice(0);
-                                    break;
+
+                                if (tmpData.get(k).getSumPrice() < 0) {
+                                    BigDecimal b1 = new BigDecimal(Float.toString(tmpData.get(i).getSumPrice()));
+                                    BigDecimal b2 = new BigDecimal(Float.toString(tmpData.get(k).getSumPrice()));
+                                    float va = b1.add(b2).floatValue();
+
+                                    if (va < 0) {
+                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
+                                        tmpData.get(i).setSumPrice(0);
+                                        tmpData.get(k).setSumPrice(va);
+                                        break;
+                                    } else if (va == 0) {
+                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
+                                        tmpData.get(i).setSumPrice(0);
+                                        tmpData.get(j).setSumPrice(0);
+                                        break;
+                                    } else if (va > 0) {
+                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + Math.abs(tmpData.get(j).getSumPrice()) + "元\n");
+                                        tmpData.get(i).setSumPrice(va);
+                                        tmpData.get(j).setSumPrice(0);
+                                        break;
+                                    }
                                 }
                             }
                             break;

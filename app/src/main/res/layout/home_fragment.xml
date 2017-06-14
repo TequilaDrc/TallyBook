@@ -115,7 +115,9 @@
                                 android:id="@+id/tvCalculate"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text=""/>
+                                android:lineSpacingMultiplier="1.5"
+                                android:textSize="18sp"
+                                android:text="计算结果"/>
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>
