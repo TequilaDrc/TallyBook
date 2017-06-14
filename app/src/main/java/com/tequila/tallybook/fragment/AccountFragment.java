@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
+import com.tequila.tallybook.dialog.AccountDialog;
+import com.tequila.tallybook.mode.AccountDetailsModel;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.TimeTrace;
 import com.tequila.tallybook.utils.CommonAsyncTask;
@@ -101,9 +103,46 @@ public class AccountFragment extends BaseFragment {
             adapter.setOnItemClickListener(new TimeTraceListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    showCenterToase(timeTraces.get(position).getsBillNo());
+                    AccountDetailsAsyncTask task = new AccountDetailsAsyncTask(getContext(), "请稍等...");
+                    task.execute(timeTraces.get(position).getsBillNo());
                 }
             });
+        }
+    }
+
+    private class AccountDetailsAsyncTask extends CommonAsyncTask<List<AccountDetailsModel>> {
+
+        public AccountDetailsAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
+
+        @Override
+        public List<AccountDetailsModel> convert(Object[] obj) {
+
+            List<AccountDetailsModel> list = new ArrayList<>();
+            list.clear();
+
+            try {
+                Call<ResultModel> call = getDataService().getAccountDetails(obj[0].toString());
+                Response<ResultModel> response = call.execute();
+                ResultModel model = response.body();
+                if (model.getSucceedFlag().equals("1")) {
+
+                    String lstData = model.getReturnInfo().toString();
+                    list = new Gson().fromJson(lstData, new TypeToken<List<AccountDetailsModel>>(){}.getType());
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return list;
+        }
+
+        @Override
+        public void setTData(List<AccountDetailsModel> accountDetailsModels) {
+            AccountDialog dialog = new AccountDialog(getContext(), accountDetailsModels);
+            dialog.show();
         }
     }
 

@@ -44,4 +44,8 @@ public interface DataService {
 
     @POST("getTallyViewBodyData.php")
     Call<ResultModel> getTallyViewBodyData();
+
+    @FormUrlEncoded
+    @POST("getAccountDetails.php")
+    Call<ResultModel> getAccountDetails(@Field("sBillNo") String sBillNo);
 }
