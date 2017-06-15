@@ -112,12 +112,16 @@ public class AccountFragment extends BaseFragment {
 
     private class AccountDetailsAsyncTask extends CommonAsyncTask<List<AccountDetailsModel>> {
 
+        private String sBillNo = "";
+
         public AccountDetailsAsyncTask(Context context, String waitStr) {
             super(context, waitStr);
         }
 
         @Override
         public List<AccountDetailsModel> convert(Object[] obj) {
+
+            sBillNo = obj[0].toString();
 
             List<AccountDetailsModel> list = new ArrayList<>();
             list.clear();
@@ -141,7 +145,7 @@ public class AccountFragment extends BaseFragment {
 
         @Override
         public void setTData(List<AccountDetailsModel> accountDetailsModels) {
-            AccountDialog dialog = new AccountDialog(getContext(), accountDetailsModels);
+            AccountDialog dialog = new AccountDialog(getContext(), accountDetailsModels, sBillNo);
             dialog.show();
         }
     }

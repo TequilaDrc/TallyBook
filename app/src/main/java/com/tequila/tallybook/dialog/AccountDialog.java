@@ -28,11 +28,13 @@ public class AccountDialog extends BaseDialog {
 
     private List<AccountDetailsModel> lstData;
     private AccountAdapter adapter;
+    private String sBillNo = "";
 
-    public AccountDialog(Context context, List<AccountDetailsModel> lstData) {
+    public AccountDialog(Context context, List<AccountDetailsModel> lstData, String sBillNo) {
         super(context);
 
         this.lstData = lstData;
+        this.sBillNo = sBillNo;
 
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_account, null);
         setContentView(view);
@@ -55,6 +57,16 @@ public class AccountDialog extends BaseDialog {
             holder.setText(R.id.tvUserName, "名        称 : " + accountDetailsModel.getsUserName())
                     .setText(R.id.tvPrice, "平均消费 : " + accountDetailsModel.getfPrice() + " 元");
         }
+    }
+
+    @OnClick(R.id.btn_delete)
+    public void delete() {
+
+    }
+
+    @OnClick(R.id.btn_update)
+    public void update() {
+
     }
 
     @OnClick(R.id.btn_cancel)
