@@ -61,12 +61,12 @@ public class AccountDialog extends BaseDialog {
 
     @OnClick(R.id.btn_delete)
     public void delete() {
-
+        showCenterToase("该功能尚未开放!");
     }
 
     @OnClick(R.id.btn_update)
     public void update() {
-
+        showCenterToase("该功能尚未开放!");
     }
 
     @OnClick(R.id.btn_cancel)

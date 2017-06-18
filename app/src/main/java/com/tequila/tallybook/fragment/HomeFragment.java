@@ -271,7 +271,8 @@ public class HomeFragment extends BaseFragment {
         public void setTData(String s) {
 
 
-            calculateData.setData(tallyViewHeadModelList);
+            calculateData.setHeadData(tallyViewHeadModelList);
+            calculateData.setBodyData(tallyViewBodyModelList);
             generateData();
 
             tvCalculate.setText(calculateData.showData());

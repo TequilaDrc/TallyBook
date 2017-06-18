@@ -10,45 +10,63 @@ import java.util.List;
 
 public class CalculateData {
 
-    private List<TallyViewHeadModel> data;
+    private List<TallyViewHeadModel> HeadData;
+    private List<TallyViewBodyModel> BodyData;
 
-    public List<TallyViewHeadModel> getData() {
-        return data;
+    public List<TallyViewHeadModel> getHeadData() {
+        return HeadData;
     }
 
-    public void setData(List<TallyViewHeadModel> data) {
-        this.data = data;
+    public void setHeadData(List<TallyViewHeadModel> headData) {
+        HeadData = headData;
     }
 
-    private float AverageData() {
-        return SumData() / data.size();
+    public List<TallyViewBodyModel> getBodyData() {
+        return BodyData;
+    }
+
+    public void setBodyData(List<TallyViewBodyModel> bodyData) {
+        BodyData = bodyData;
     }
 
     private float SumData() {
         float sumData = 0.0000f;
 
-        for (int i = 0; i < data.size(); i++) {
-            sumData += data.get(i).getSumPrice();
+        for (int i = 0; i < HeadData.size(); i++) {
+            sumData += HeadData.get(i).getSumPrice();
         }
 
         return sumData;
     }
 
     public String showData () {
-        return "总金额为 : " + SumData() + "元\n" + "平均每个人消费金额 : " + AverageData() + "元\n\n" + Calculate();
+        return "总金额为 : " + SumData() + "元\n\n" + Calculate();
     }
 
-    private String Calculate () {
+    private String Calculate() {
         StringBuffer buffer = new StringBuffer();
         List<TallyViewHeadModel> tmpData = new ArrayList<>();
 
-        for (int i = 0; i < data.size(); i++) {
-            TallyViewHeadModel model = new TallyViewHeadModel();
-            model.setSumPrice(AverageData() - data.get(i).getSumPrice());
-            model.setMarkerName(data.get(i).getMarkerName());
+        for (int i = 0; i < HeadData.size(); i++) {
+            for (int j = 0; j < BodyData.size(); j++) {
+                if (HeadData.get(i).getMarkerName().equals(BodyData.get(j).getMarkerName())) {
 
-            tmpData.add(model);
+                    BigDecimal bigDecimal1 = new BigDecimal(Float.toString(BodyData.get(j).getSumPrice()));
+                    BigDecimal bigDecimal2 = new BigDecimal(Float.toString(HeadData.get(i).getSumPrice()));
+                    float cha = bigDecimal1.subtract(bigDecimal2).floatValue();
+
+                    TallyViewHeadModel model = new TallyViewHeadModel();
+                    model.setMarkerName(HeadData.get(i).getMarkerName());
+                    model.setSumPrice(cha);
+                    tmpData.add(model);
+                }
+            }
         }
+
+        return XunHuan(buffer, tmpData);
+    }
+
+    private String XunHuan (StringBuffer buffer, List<TallyViewHeadModel> tmpData) {
 
         for (int i = 0; i < tmpData.size(); i++) {
             if (tmpData.get(i).getSumPrice() > 0) {
@@ -74,31 +92,7 @@ public class CalculateData {
                             tmpData.get(i).setSumPrice(v);
                             tmpData.get(j).setSumPrice(0);
 
-                            for (int k = 0; k < tmpData.size(); k++) {
-
-                                if (tmpData.get(k).getSumPrice() < 0) {
-                                    BigDecimal b1 = new BigDecimal(Float.toString(tmpData.get(i).getSumPrice()));
-                                    BigDecimal b2 = new BigDecimal(Float.toString(tmpData.get(k).getSumPrice()));
-                                    float va = b1.add(b2).floatValue();
-
-                                    if (va < 0) {
-                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
-                                        tmpData.get(i).setSumPrice(0);
-                                        tmpData.get(k).setSumPrice(va);
-                                        break;
-                                    } else if (va == 0) {
-                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + tmpData.get(i).getSumPrice() + "元\n");
-                                        tmpData.get(i).setSumPrice(0);
-                                        tmpData.get(j).setSumPrice(0);
-                                        break;
-                                    } else if (va > 0) {
-                                        buffer.append(tmpData.get(i).getMarkerName() + "需给" + tmpData.get(k).getMarkerName() + " : " + Math.abs(tmpData.get(j).getSumPrice()) + "元\n");
-                                        tmpData.get(i).setSumPrice(va);
-                                        tmpData.get(j).setSumPrice(0);
-                                        break;
-                                    }
-                                }
-                            }
+                            XunHuan(buffer, tmpData);
                             break;
                         }
                     }
