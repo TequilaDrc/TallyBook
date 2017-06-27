@@ -110,41 +110,53 @@ public class LoginActivity extends BaseActivity{
         }
     }
 
-    private class LoginasyncTask extends CommonAsyncTask<UsrUserModel> {
+    private class LoginasyncTask extends CommonAsyncTask<ResultModel> {
 
         public LoginasyncTask(Context context, String waitStr) {
             super(context, waitStr);
         }
 
         @Override
-        public UsrUserModel convert(Object[] obj) {
+        public ResultModel convert(Object[] obj) {
 
-            UsrUserModel user = new UsrUserModel();
+            ResultModel model = null;
+
             Call<ResultModel> call = getDataService().loginvalidation(obj[0].toString(), obj[1].toString());
             try {
                 Response<ResultModel> response = call.execute();
-                ResultModel model = response.body();
-                if (model.getSucceedFlag().equals("1")) {
-                    user = new Gson().fromJson(model.getReturnInfo().toString(), UsrUserModel.class);
-                }
+                model = response.body();
+
             } catch (IOException e) {
-                e.printStackTrace();
-                user = null;
+                model = new ResultModel();
+                model.setSucceedFlag("0");
+                model.setErrorInfo(e.getMessage());
+                model.setReturnInfo("");
             }
 
-            return user;
+            return model;
         }
 
         @Override
-        public void setTData(UsrUserModel usrUserModel) {
+        public void setTData(ResultModel model) {
 
-            if (usrUserModel != null) {
-                Preference.getInstance(LoginActivity.this).setLoginName(usrUserModel.getsUserName());
-                Preference.getInstance(LoginActivity.this).setPassword(usrUserModel.getsPasswd());
-                Preference.getInstance(LoginActivity.this).setLoginPhone(usrUserModel.getsUserPhone());
+            if (model.getSucceedFlag().equals("1")) {
+                UsrUserModel userModel = new Gson().fromJson(model.getReturnInfo().toString(), UsrUserModel.class);
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                if (userModel != null) {
+
+                    if (!TextUtils.isEmpty(userModel.getsUserName())) {
+                        Preference.getInstance(LoginActivity.this).setLoginName(userModel.getsUserName());
+                        Preference.getInstance(LoginActivity.this).setPassword(userModel.getsPasswd());
+                        Preference.getInstance(LoginActivity.this).setLoginPhone(userModel.getsUserPhone());
+
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }
+            } else if (model.getSucceedFlag().equals("0")) {
+                showCenterToase(model.getErrorInfo());
+            } else if (model.getSucceedFlag().equals("2")) {
+                showCenterToase("密码与账号不符,请检查账号与密码");
             }
         }
     }

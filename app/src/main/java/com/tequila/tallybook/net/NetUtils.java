@@ -19,7 +19,7 @@ public class NetUtils {
             .build();
 
     public static Retrofit retrofit = new Retrofit.Builder()
-//            .baseUrl("http://192.168.2.10/WebService/TallyBook/")
+//            .baseUrl("http://192.168.2.12/WebService/TallyBook/")
             .baseUrl("http://www.tequilastudio.cn/TallyBook/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)

@@ -1,21 +1,34 @@
 package com.tequila.tallybook.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseDialog;
 import com.tequila.tallybook.mode.AccountDetailsModel;
+import com.tequila.tallybook.mode.ResultModel;
+import com.tequila.tallybook.net.NetworkManager;
+import com.tequila.tallybook.net.query.AlterTallyDataQuery;
+import com.tequila.tallybook.utils.CommonAsyncTask;
+import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.adapter.CommonAdapter;
 import com.tequila.tallybook.utils.adapter.ViewHolder;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by Tequila on 2017/6/14.
@@ -61,7 +74,64 @@ public class AccountDialog extends BaseDialog {
 
     @OnClick(R.id.btn_delete)
     public void delete() {
-        showCenterToase("该功能尚未开放!");
+
+        String userName = Preference.getInstance(getContext()).getLoginName();
+
+        if (TextUtils.isEmpty(userName)) {
+            return;
+        }
+
+        AlterTallyDataQuery query = new AlterTallyDataQuery();
+        query.setsBillNo(sBillNo);
+        query.setsMakerName(userName);
+
+        String dataJson = new Gson().toJson(query, new TypeToken<AlterTallyDataQuery>(){}.getType());
+        if (NetworkManager.nm.isNetworkAvailable(getContext())) {
+
+            deleteDataAsyncTask task = new deleteDataAsyncTask(getContext(), "保存中...");
+            task.execute(dataJson);
+        }
+    }
+
+    private class deleteDataAsyncTask extends CommonAsyncTask<ResultModel> {
+
+        public deleteDataAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
+
+        @Override
+        public ResultModel convert(Object[] obj) {
+
+            ResultModel model = new ResultModel();
+
+            try {
+
+                RequestBody requestBody =
+                        RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj[0].toString());
+
+                Call<ResultModel> call = getDataService().alterTallyData(requestBody);
+                Response<ResultModel> response = call.execute();
+                model = response.body();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.setErrorInfo(e.getMessage());
+                model.setSucceedFlag("0");
+            }
+
+            return model;
+        }
+
+        @Override
+        public void setTData(ResultModel model) {
+
+            if (model.getSucceedFlag().equals("1")) {
+                showCenterToase("删除成功!");
+                dismiss();
+            } else {
+                showCenterToase(model.getErrorInfo());
+            }
+        }
     }
 
     @OnClick(R.id.btn_update)
