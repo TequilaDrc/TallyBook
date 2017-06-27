@@ -38,7 +38,7 @@ public class BaseDialog extends Dialog {
     // 显示中间的Toast
     public void showCenterToase(String info) {
 
-        Toast toast = Toast.makeText(context, info, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, info, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }

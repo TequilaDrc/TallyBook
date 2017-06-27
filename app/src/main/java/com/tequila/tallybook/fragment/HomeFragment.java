@@ -1,9 +1,11 @@
 package com.tequila.tallybook.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +133,8 @@ public class HomeFragment extends BaseFragment {
 
         UpgradeUtils.checkVersion(getContext(), 2);
 
+        judgeUserInfo();
+
         return mRootView;
     }
 
@@ -138,6 +142,33 @@ public class HomeFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+
+
+    }
+
+    // 判断用户信息是否为空
+    private void judgeUserInfo () {
+
+        String userName = Preference.getInstance(getContext()).getLoginName();
+
+        if (TextUtils.isEmpty(userName)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("您的用户信息为空，点击确定返回登陆界面!");
+            builder.setTitle("提示");
+            builder.setCancelable(false);
+
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+
+                }
+            });
+
+            builder.create().show();
+        }
     }
 
     // 获取柱状图数据

@@ -1,6 +1,8 @@
 package com.tequila.tallybook.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,22 +80,44 @@ public class AccountDialog extends BaseDialog {
     @OnClick(R.id.btn_delete)
     public void delete() {
 
-        String userName = Preference.getInstance(getContext()).getLoginName();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("确定删除这条信息吗?");
+        builder.setTitle("提示");
 
-        if (TextUtils.isEmpty(userName)) {
-            return;
-        }
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-        AlterTallyDataQuery query = new AlterTallyDataQuery();
-        query.setsBillNo(sBillNo);
-        query.setsMakerName(userName);
+                String userName = Preference.getInstance(getContext()).getLoginName();
 
-        String dataJson = new Gson().toJson(query, new TypeToken<AlterTallyDataQuery>(){}.getType());
-        if (NetworkManager.nm.isNetworkAvailable(getContext())) {
+                if (TextUtils.isEmpty(userName)) {
+                    showCenterToase("用户名为空!");
+                    return;
+                }
 
-            deleteDataAsyncTask task = new deleteDataAsyncTask(getContext(), "保存中...");
-            task.execute(dataJson);
-        }
+                AlterTallyDataQuery query = new AlterTallyDataQuery();
+                query.setsBillNo(sBillNo);
+                query.setsMakerName(userName);
+
+                String dataJson = new Gson().toJson(query, new TypeToken<AlterTallyDataQuery>(){}.getType());
+                if (NetworkManager.nm.isNetworkAvailable(getContext())) {
+
+                    deleteDataAsyncTask task = new deleteDataAsyncTask(getContext(), "保存中...");
+                    task.execute(dataJson);
+                }
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.create().show();
+
+
     }
 
     private class deleteDataAsyncTask extends CommonAsyncTask<ResultModel> {
@@ -137,6 +161,8 @@ public class AccountDialog extends BaseDialog {
                 event.setFlag(true);
                 EventBus.getDefault().post(event);
 
+            } else if (model.getSucceedFlag().equals("2")) {
+                showCenterToase("这不是您做的记录，您无权删除!");
             } else {
                 showCenterToase(model.getErrorInfo());
             }
