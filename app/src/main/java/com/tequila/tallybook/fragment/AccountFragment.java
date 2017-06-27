@@ -14,11 +14,15 @@ import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.dialog.AccountDialog;
+import com.tequila.tallybook.event.AccountEvent;
 import com.tequila.tallybook.mode.AccountDetailsModel;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.mode.TimeTrace;
 import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.adapter.TimeTraceListAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +61,15 @@ public class AccountFragment extends BaseFragment {
         ButterKnife.bind(this, mRootView);
         getData();
 
+        EventBus.getDefault().register(this);
+
         return mRootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     private void getData() {
@@ -65,6 +77,14 @@ public class AccountFragment extends BaseFragment {
         AccountAsyncTask task = new AccountAsyncTask(getContext(), "获取数据中...");
         task.execute("");
 
+    }
+
+    @Subscribe
+    public void updateData(AccountEvent event) {
+
+        if (event.isFlag()) {
+            getData();
+        }
     }
 
     private class AccountAsyncTask extends CommonAsyncTask<List<TimeTrace>> {

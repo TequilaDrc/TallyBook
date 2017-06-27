@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseDialog;
+import com.tequila.tallybook.event.AccountEvent;
 import com.tequila.tallybook.mode.AccountDetailsModel;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.net.NetworkManager;
@@ -18,6 +19,8 @@ import com.tequila.tallybook.utils.CommonAsyncTask;
 import com.tequila.tallybook.utils.Preference;
 import com.tequila.tallybook.utils.adapter.CommonAdapter;
 import com.tequila.tallybook.utils.adapter.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -127,7 +130,13 @@ public class AccountDialog extends BaseDialog {
 
             if (model.getSucceedFlag().equals("1")) {
                 showCenterToase("删除成功!");
+
                 dismiss();
+
+                AccountEvent event = new AccountEvent();
+                event.setFlag(true);
+                EventBus.getDefault().post(event);
+
             } else {
                 showCenterToase(model.getErrorInfo());
             }
