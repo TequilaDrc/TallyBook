@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.bean.UserBean;
+import com.tequila.tallybook.dialog.ExitDialog;
 import com.tequila.tallybook.mode.ResultModel;
 import com.tequila.tallybook.net.NetworkManager;
 import com.tequila.tallybook.net.query.saveLifeInfoQuery;
@@ -231,6 +232,10 @@ public class LifeFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
+
+        ExitDialog dialog = new ExitDialog(getContext());
+        dialog.show();
+
         return true;
     }
 }

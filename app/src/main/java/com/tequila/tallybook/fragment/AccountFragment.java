@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tequila.tallybook.R;
 import com.tequila.tallybook.base.BaseFragment;
 import com.tequila.tallybook.dialog.AccountDialog;
+import com.tequila.tallybook.dialog.ExitDialog;
 import com.tequila.tallybook.event.AccountEvent;
 import com.tequila.tallybook.mode.AccountDetailsModel;
 import com.tequila.tallybook.mode.ResultModel;
@@ -172,6 +173,10 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
+
+        ExitDialog dialog = new ExitDialog(getContext());
+        dialog.show();
+
         return true;
     }
 }
