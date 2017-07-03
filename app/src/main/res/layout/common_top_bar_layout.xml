@@ -17,11 +17,23 @@
         app:roundHeight="17.5dp"/>
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="首页"
         android:layout_centerInParent="true"
         android:textColor="#ffffff"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/btn_Jz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="结账"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"/>
 
 </RelativeLayout>

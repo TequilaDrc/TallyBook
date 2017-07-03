@@ -142,8 +142,6 @@ public class HomeFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-
-
     }
 
     // 判断用户信息是否为空
@@ -168,6 +166,68 @@ public class HomeFragment extends BaseFragment {
             });
 
             builder.create().show();
+        }
+    }
+
+    @OnClick(R.id.btn_Jz)
+    public void jzClick() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("您是否确认结账！");
+        builder.setTitle("提示");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                settleAccountsAsyncTask task = new settleAccountsAsyncTask(getContext(), "结账中,请稍后...");
+                task.execute();
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+
+    private class settleAccountsAsyncTask extends CommonAsyncTask<ResultModel> {
+
+        public settleAccountsAsyncTask(Context context, String waitStr) {
+            super(context, waitStr);
+        }
+
+        @Override
+        public ResultModel convert(Object[] obj) {
+
+            ResultModel model = new ResultModel();
+
+            try {
+                Call<ResultModel> call = getDataService().settleAccounts();
+                Response<ResultModel> response = call.execute();
+                model = response.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                model.setErrorInfo(e.getMessage());
+                model.setSucceedFlag("0");
+            }
+
+            return model;
+        }
+
+        @Override
+        public void setTData(ResultModel resultModel) {
+            if (resultModel.getSucceedFlag().equals("1")) {
+                showCenterToase("结账成功!");
+            } else {
+                showCenterToase(resultModel.getErrorInfo());
+            }
         }
     }
 

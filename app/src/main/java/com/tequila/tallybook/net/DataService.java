@@ -51,4 +51,7 @@ public interface DataService {
 
     @POST("alterTallyData.php")
     Call<ResultModel> alterTallyData(@Body RequestBody requestBody);
+
+    @POST("settleAccounts.php")
+    Call<ResultModel> settleAccounts();
 }
